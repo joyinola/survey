@@ -1,0 +1,1 @@
+web: gunicorn surveyapp.wsgi --log-file -

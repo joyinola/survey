@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset='utf-8'>
+        <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+        <title>Headline</title>
+        <meta name='viewport' content='width=device-width, initial-scale=1'>
+        <link rel="stylesheet" href="../static/font-awesome-4.7.0/css/font-awesome.css ">
+
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+        <style>
+            @import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;700&display=swap');
+        </style> 
+        <link rel='stylesheet' type='text/css' media='screen' href='../../static/survey.css'>
+    </head>  
+    <body>
+        <section id="headlinebody">
+            <div class="container">
+        <div id ='headlineRow' class="row">
+            {%for i in p.object_list%}
+            <div  class="col col-6 d-flex justify-content-center">
+            <br>
+            <div class="col-content">
+            <img  src="{{i.img}}"/>
+            <br>
+            <p name='headline', id='{{i.id}}'>{{i.description}}</p>
+            <a data-id='{{i.id}}' href="" data-page="{{p.number}}" id='tu{{i.id}}' data-vote="upvote" name="vote"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i></a>
+
+            
+           <a data-id='{{i.id}}' href="" data-page="{{p.number}}" id="td{{i.id}}" data-vote="downvote" name="vote"> <i class="fa fa-thumbs-o-down" aria-hidden="true"></i></a>
+       </div>
+        </div>
+            {%endfor%}
+
+        </div>
+
+    </div>
+    <div id="taskuncomplete" class="hidden alert alert-danger">
+RATE ALL EXPERIMENT BEFORE PROCEEDING!!
+    </div>
+    <br>
+    <div class='votebtn' style="padding-left: 100px;">
+            {% if p.has_previous%}
+            <a class="btn btn-primary" href="{%url 'updateHeadline' p.previous_page_number%}">Previous</a>
+            {%endif%}
+            {%if p.has_next%}
+        
+            <a class="btn btn-primary" href="{%url 'updateHeadline' p.next_page_number%}">Next</a>
+            {%else%}
+            <button class="btn btn-primary" id="info">Next Task</button>
+            {%endif%}
+        </div>
+            </section>
+            <script src="../static/info.js"></script>
+            <script type="text/javascript"> 
+
+              
+
+            const infoHeadline=[]
+            const headline = document.getElementsByName('headline')
+            for(i of headline){
+                infoHeadline.push(i.id)
+            }
+
+
+            window.onload=()=>{
+                    fetch(`/vc/${JSON.stringify(infoHeadline)}`).then(response=>response.json()).then(
+                        data=>{
+                            data=Object.entries(data)
+                            if (data.length===0){
+                                const links=document.getElementsByTagName('a')
+                                for (i of links){
+                                    i.classList=''}
+                            }
+                            else if(data.length===1){
+                                id1=data[0][0]
+                                vote1=data[0][1]
+                                if(vote1==='Upvote'){
+                                document.getElementById(`tu${id1}`).classList.add('purple')
+                            }
+                            else{
+                                document.getElementById(`td${id1}`).classList.add('purple')
+                            }
+                            }
+                            else{
+
+                                id1=data[0][0]
+                                id2=data[1][0]
+                                vote1=data[0][1]
+                                vote2=data[1][1]
+                                if (vote1==='Upvote'){
+                                    document.getElementById(`tu${id1}`).classList.add('purple')
+                                    document.getElementById(`td${id2}`).classList.add('purple')
+                                }
+                                else{
+                                document.getElementById(`td${id1}`).classList.add('purple')
+                                document.getElementById(`tu${id2}`).classList.add('purple')
+                            }
+                            // if (vote2==='Downvote'){
+                            //      document.getElementById(`tu${id2}`).classList.add('purple')
+                                
+                            // }
+                            //  else{
+                            //     document.getElementById(`td${id2}`).classList.add('purple')
+                            // }
+                            }
+                        })
+                 }
+               const vote= document.getElementsByName('vote')
+               for( i of vote){
+                const id=i.dataset.id
+                const page=i.dataset.page
+                const value=i.dataset.vote
+
+
+               i.addEventListener('click',(e)=>{
+
+                e.preventDefault()     
+        fetch(`/vote/${id}/${value}`,{
+        method:'POST',
+        headers:{'Content-Type':'application/json',},
+        body:JSON.stringify({infoHeadline})
+}).then(response=>response.json()).then(
+                        data=>{
+                            console.log(data)
+                            if (data=='pending'){
+                                const links=document.getElementsByTagName('a')
+                                for (i of links){
+                                    i.classList=''
+                                }
+                            }
+                        else{
+                            if (infoHeadline.length===1){
+    if (value==='upvote'){
+        document.getElementById(`tu${id}`).classList.add('purple')
+        document.getElementById(`td${id}`).classList=''
+    }
+    else{
+        document.getElementById(`td${id}`).classList.add('purple')
+        document.getElementById(`tu${id}`).classList=''
+    }
+}
+else{
+                      
+                const index=infoHeadline.indexOf(id) 
+                console.log(infoHeadline)           
+                if (value==='upvote'){
+                            document.getElementById(`tu${id}`).classList.add('purple')
+                            document.getElementById(`td${id}`).classList=''
+                            
+                            if(index==0){
+                            document.getElementById(`tu${infoHeadline[1]}`).classList=''
+                            document.getElementById(`td${infoHeadline[1]}`).classList.add('purple')}
+                            else{
+                            document.getElementById(`tu${infoHeadline[0]}`).classList=''
+                            document.getElementById(`td${infoHeadline[0]}`).classList.add('purple')}
+                            }
+                        
+                    else{
+                        document.getElementById(`td${id}`).classList.add('purple')
+                        document.getElementById(`tu${id}`).classList=''
+                         if(index==0){
+                            document.getElementById(`tu${infoHeadline[1]}`).classList.add('purple')
+                            document.getElementById(`td${infoHeadline[1]}`).classList=''}
+                            else{
+                            document.getElementById(`tu${infoHeadline[0]}`).classList.add('purple')
+                            document.getElementById(`td${infoHeadline[0]}`).classList=''}
+                            }
+                        }
+                    }})
+
+                        })
+              
+                    }
+
+    
+               const info= document.getElementById("info")
+               if(info){
+                   info.addEventListener('click',()=>{
+                       fetch('/validatetask/').then(response=>response.json()).then(
+                        data=>{ 
+                            if (data=='true'){
+                            window.location.href='{%url "info"%}'
+                        }
+                        else{
+                            console.log(data)
+                            document.getElementById('taskuncomplete').classList.remove('hidden')
+                        }
+              
+                    })
+    
+})}
+                </script>
+    </body>  
+</html>
