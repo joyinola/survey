@@ -180,7 +180,7 @@ def vote(request,num:str,vote:str):
                         voted.delete()
                     Vote.objects.get_or_create(user=user,headline=obj2,vote='Downvote')
                     try:
-                        voted=DownVote.objects.get(user=user,headline=obj1)
+                        voted=Vote.objects.get(user=user,headline=obj1,vote='Downvote')
                     except:
                         voted=None
                     if (voted):
