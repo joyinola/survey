@@ -63,16 +63,16 @@ img{
     color: inherit;
 }*/
 .fa{
-    background-color: white;
+    background-color: rgba(255, 238, 249,0.5);
 }
 .col-content a{
-    background-color: white;
+    background-color: rgba(255, 238, 249,0.5);
 }
 /*.fa:hover{
     background-color: white;
 */}
 .purple .fa{
-background-color: white;
+background-color: rgba(255, 238, 249,0.5);
 color:#260339
 
 }

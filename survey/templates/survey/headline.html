@@ -42,7 +42,7 @@ Rate all experiment before proceeding
     <br>
     <div class='votebtn'>
             {% if p.has_previous%}
-            <a class="btn vote" href="{%url 'updateHeadline' p.previous_page_number%}">Previous</a>
+            <button class="btn vote" id='previous' data-previous="{%url 'updateHeadline' p.previous_page_number%}">Previous</button>
             {%endif%}
             {%if p.has_next%}
         
@@ -55,8 +55,18 @@ Rate all experiment before proceeding
             </section>
             <script src="../../../static/info.js"></script>
             <script type="text/javascript"> 
+    try{
+        const previous =document.getElementById('previous')
+         previous.addEventListener('click',()=>{
+    window.location=previous.dataset.previous})
 
-              
+}
+catch{
+   (e)=>{console.log(e)}
+}
+  
+
+ 
 
             const infoHeadline=[]
             const headline = document.getElementsByName('headline')
