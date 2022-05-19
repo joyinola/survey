@@ -7,7 +7,7 @@
         padding: 0px 30px;
 }
 a:hover{
-    background-color: #260230;
+    /*background-color: #260230;*/
 }
 #gif{
 margin-bottom: 25px;
@@ -57,11 +57,11 @@ height: 35px;
 img{
     display: block;
 }
-.thumbs, .thumbs:hover,.thumbs:focus,.thumbs:active{
+/*.thumbs, .thumbs:hover,.thumbs:focus,.thumbs:active{
     background-color: white;
     text-decoration: none;
     color: inherit;
-}
+}*/
 .fa{
     background-color: white;
 }
