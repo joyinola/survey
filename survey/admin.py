@@ -10,5 +10,6 @@ admin.site.register(Utilizer,UserAdmin)
 class VoteAdmin(ImportExportModelAdmin,admin.ModelAdmin):
 	resource_class=VoteResource
 admin.site.register(Vote,VoteAdmin)
-
+class VoteAdmin(ImportExportModelAdmin,admin.ModelAdmin):
+	resource_class=HeadlinesResource
 admin.site.register(HeadLines)
