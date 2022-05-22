@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config('SECRET_KEY')
 # SECRET_KEY = 'jnq197nbjmg^e7&@83u67c#c)d+n!2zcmj74x%s931ys!iygm&'
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['polls-ng.herokuapp.com','127.0.0.1']
 
