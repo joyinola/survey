@@ -79,14 +79,14 @@ WSGI_APPLICATION = 'surveyapp.wsgi.application'
 
 DATABASES = {
     'default': {
-    # 'ENGINE':'django.db.backends.postgresql_psycopg2',
-    # 'NAME':'dd5a80ma5u3ua',
-    # 'USER':'rmjqweqanjfhbn',
-    # 'PASSWORD':'4f5ba41c73d0731de0c29976549a27f36a9e08cf62c61237f2e3ab656746de0c',
-    # 'HOST':'ec2-54-165-184-219.compute-1.amazonaws.com',
-    # 'PORT':5432,
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+    'ENGINE':'django.db.backends.postgresql_psycopg2',
+    'NAME':'dd5a80ma5u3ua',
+    'USER':'rmjqweqanjfhbn',
+    'PASSWORD':'4f5ba41c73d0731de0c29976549a27f36a9e08cf62c61237f2e3ab656746de0c',
+    'HOST':'ec2-54-165-184-219.compute-1.amazonaws.com',
+    'PORT':5432,
+        # 'ENGINE': 'django.db.backends.sqlite3',
+        # 'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 
