@@ -9,7 +9,9 @@ admin.site.register(Utilizer,UserAdmin)
 
 class VoteAdmin(ImportExportModelAdmin,admin.ModelAdmin):
 	resource_class=VoteResource
+
 admin.site.register(Vote,VoteAdmin)
-class VoteAdmin(ImportExportModelAdmin,admin.ModelAdmin):
+
+class HeadlineAdmin(ImportExportModelAdmin,admin.ModelAdmin):
 	resource_class=HeadlineResource
-admin.site.register(HeadLines)
+admin.site.register(HeadLines,HeadlineAdmin)
