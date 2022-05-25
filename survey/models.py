@@ -75,6 +75,7 @@ class Utilizer(models.Model):
     prolificId=models.CharField(max_length=100)
     gender=models.CharField(choices=Gender, max_length=50)
     age=models.CharField(choices=Age,max_length=50)
+    puceTest=models.CharField(max_length=100,null=True,blank=True)
     ipAddress=models.CharField(max_length=250)
     qualification=models.CharField(choices=Qualification,max_length=50)
     confirmationCode=models.CharField(max_length=100,null=True)
@@ -91,12 +92,3 @@ class Vote(models.Model):
     createdAt=models.DateTimeField(auto_now_add=True)
     updatedAt=models.DateTimeField(auto_now=True,null=True)
 
-# class UpVote(models.Model):
-#     user=models.ForeignKey(Utilizer,on_delete=models.SET_NULL,null=True)
-#     headline=models.ForeignKey(HeadLines,on_delete=models.CASCADE)
-    
-
-# class DownVote(models.Model):
-#     user=models.ForeignKey(Utilizer,on_delete=models.SET_NULL,null=True)
-#     headline=models.ForeignKey(HeadLines,on_delete=models.CASCADE)
-#     

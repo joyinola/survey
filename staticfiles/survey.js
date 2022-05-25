@@ -39,20 +39,34 @@ const test=document.getElementsByClassName('test')
 for (const i of test){
   i.addEventListener('click', function(e){
     const testInput=document.getElementById('testInput').value
-    console.log('success')
     e.preventDefault()
     console.log('continue clicked')
   if(testInput==''){
      document.getElementById('inputerror').classList.remove('hidden')
   }
   else{
+    console.log('success')
+    fetch('test/',
+      {
+      method:'POST',
+      headers:
+      {
+        'Content-Type':'application/json'
+      },
+      body:JSON.stringify({'testInput':testInput})
+    }
+      ).then(response=>response.json()).then(data=>{
+      console.log(data)
      document.getElementById('inputerror').classList.add('hidden')
       document.getElementById('testSection').classList.toggle('hidden')
-      document.getElementById('headlines1').classList.toggle('hidden')}
+      document.getElementById('headlines1').classList.toggle('hidden')})
+
+    }
       
      
     
-  }) }
+  }
+  ) }
   document.getElementById('headlines2').addEventListener('click',()=>{
    
 

@@ -216,8 +216,16 @@ def voteCasted(request,data):
         except:
             pass
     return JsonResponse(status)
-
-
+@csrf_exempt
+def saveTest(request):
+    if request.method=='POST':
+        data=json.loads(request.body)
+        user=Utilizer.objects.get(prolificId=request.COOKIES['userid'])
+        user.puceTest=data['testInput']
+        user.save()
+        return JsonResponse(data,safe=True)
+    else:
+        return JsonResponse('false',safe=False)
 
 
 
