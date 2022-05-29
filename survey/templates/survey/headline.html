@@ -25,10 +25,31 @@
             <img  src="{{i.img.url}}"/>
             <br>
             <p name='headline', id='{{i.id}}'>{{i.description}}</p>
-            <a data-id='{{i.id}}' class='thumbs' href="#" data-page="{{p.number}}" id='tu{{i.id}}' data-vote="upvote" name="vote"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i></a>
+            <button data-id='{{i.id}}' class='thumbs position-relative' data-thumbs="thumbs" href="#" data-page="{{p.number}}" id='tu{{i.id}}' 
+            data-vote="upvote" name="vote"> <i class="fa fa-thumbs-up" aria-hidden="true"></i> Upvote
+
+            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-dark">
+
+                {{i.upVotes}}
+                <span class="visually-hidden">unread messages</span>
+              </span>
+            
+            </button>
+            <button data-id='{{i.id}}' class='position-relative'data-thumbs="thumbs"  href="#" data-page="{{p.number}}" id="td{{i.id}}" 
+            data-vote="downvote" name="vote"><i class="fa fa-thumbs-down" aria-hidden="true"></i>Downvote
+
+            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-dark">
+                {{i.downVotes}}
+                <span class="visually-hidden">unread messages</span>
+              </span>
+            
+            </button>
+            <!-- <a data-id='{{i.id}}' class='thumbs' href="#" data-page="{{p.number}}" id='tu{{i.id}}' 
+                data-vote="upvote" name="vote"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i></a>
 
             
-           <a data-id='{{i.id}}' class='thumbs' href="#" data-page="{{p.number}}" id="td{{i.id}}" data-vote="downvote" name="vote"> <i class="fa fa-thumbs-o-down" aria-hidden="true"></i></a>
+           <a data-id='{{i.id}}' class='thumbs' href="#" data-page="{{p.number}}" id="td{{i.id}}" 
+           data-vote="downvote" name="vote"> <i class="fa fa-thumbs-o-down" aria-hidden="true"></i></a> -->
        </div>
         </div>
             {%endfor%}
@@ -56,8 +77,8 @@ Rate all experiment before proceeding
             <script src="../../../static/info.js"></script>
             <script type="text/javascript"> 
     try{
-        const previous =document.getElementById('previous')
-         previous.addEventListener('click',()=>{
+    const previous =document.getElementById('previous')
+    previous.addEventListener('click',()=>{
     window.location=previous.dataset.previous})
 
 }
@@ -102,37 +123,38 @@ catch{
                     fetch(`/vc/${JSON.stringify(infoHeadline)}`).then(response=>response.json()).then(
                         data=>{
                             data=Object.entries(data)
-                            if (data.length===0){
+                            console.log(data)
+                    if (data.length===0){
                                 const links=document.getElementsByTagName('a')
                                 for (i of links){
                                     i.classList=''}
                             }
-                            else if(data.length===1){
+                    else{
                                 id1=data[0][0]
                                 vote1=data[0][1]
-                                if(vote1==='Upvote'){
+                        if(vote1==='Upvote'){
                                 document.getElementById(`tu${id1}`).classList.add('purple')
                             }
-                            else{
+                        else{
                                 document.getElementById(`td${id1}`).classList.add('purple')
                             }
                             }
-                            else{
+                    // else{
 
-                                id1=data[0][0]
-                                id2=data[1][0]
-                                vote1=data[0][1]
-                                vote2=data[1][1]
-                                if (vote1==='Upvote'){
-                                    document.getElementById(`tu${id1}`).classList.add('purple')
-                                    document.getElementById(`td${id2}`).classList.add('purple')
-                                }
-                                else{
-                                document.getElementById(`td${id1}`).classList.add('purple')
-                                document.getElementById(`tu${id2}`).classList.add('purple')
-                            }
+                    //             id1=data[0][0]
+                    //             id2=data[1][0]
+                    //             vote1=data[0][1]
+                    //             vote2=data[1][1]
+                    //             if (vote1==='Upvote'){
+                    //                 document.getElementById(`tu${id1}`).classList.add('purple')
+                    //                 document.getElementById(`td${id2}`).classList.add('purple')
+                    //             }
+                    //             else{
+                    //             document.getElementById(`td${id1}`).classList.add('purple')
+                    //             document.getElementById(`tu${id2}`).classList.add('purple')
+                    //         }
                            
-                            }
+                    //         }
                         })
                  }
                const vote= document.getElementsByName('vote')
@@ -148,18 +170,18 @@ catch{
         fetch(`/vote/${id}/${value}`,{
         method:'POST',
         headers:{'Content-Type':'application/json',},
-        body:JSON.stringify({infoHeadline})
+        body:JSON.stringify({'infoHeadline':infoHeadline})
 }).then(response=>response.json()).then(
                         data=>{
                             console.log(data)
-                            if (data=='pending'){
-                                const links=document.getElementsByTagName('a')
-                                for (i of links){
-                                    i.classList.remove('purple')
-                                }
-                            }
-                        else{
-                            if (infoHeadline.length===1){
+                            // if (data=='pending'){
+                            //     const links=document.getElementsByTagName('a')
+                            //     for (i of links){
+                            //         i.classList.remove('purple')
+                            //     }
+                            // }
+                        // else{
+        if (infoHeadline.length===1){
     if (value==='upvote'){
         document.getElementById(`tu${id}`).classList.add('purple')
         document.getElementById(`td${id}`).classList.remove('purple')
@@ -168,6 +190,12 @@ catch{
         document.getElementById(`td${id}`).classList.add('purple')
         document.getElementById(`tu${id}`).classList.remove('purple')
     }
+// comment the next 2 lines
+document.querySelector(`#tu${id} :nth-child(2)`).innerHTML=data['count1']['upvote']
+document.querySelector(`#td${id} :nth-child(2)`).innerHTML=data['count1']['downvote']
+
+
+
 }
 else{
                       
@@ -175,30 +203,41 @@ else{
                 console.log(infoHeadline)           
                 if (value==='upvote'){
                             document.getElementById(`tu${id}`).classList.add('purple')
+                            
                             document.getElementById(`td${id}`).classList.remove('purple')
                             
                             if(index==0){
                             document.getElementById(`tu${infoHeadline[1]}`).classList.remove('purple')
-                            document.getElementById(`td${infoHeadline[1]}`).classList.add('purple')}
+                            document.getElementById(`td${infoHeadline[1]}`).classList.remove('purple')}
                             else{
                             document.getElementById(`tu${infoHeadline[0]}`).classList.remove('purple')
-                            document.getElementById(`td${infoHeadline[0]}`).classList.add('purple')}
+                            document.getElementById(`td${infoHeadline[0]}`).classList.remove('purple')}
                             }
                         
                     else{
                         document.getElementById(`td${id}`).classList.add('purple')
                         document.getElementById(`tu${id}`).classList.remove('purple')
                          if(index==0){
-                            document.getElementById(`tu${infoHeadline[1]}`).classList.add('purple')
+                            document.getElementById(`tu${infoHeadline[1]}`).classList.remove('purple')
                             document.getElementById(`td${infoHeadline[1]}`).classList.remove('purple')}
                             else{
-                            document.getElementById(`tu${infoHeadline[0]}`).classList.add('purple')
+                            document.getElementById(`tu${infoHeadline[0]}`).classList.remove('purple')
                             document.getElementById(`td${infoHeadline[0]}`).classList.remove('purple')}
-                            }
-                        }
-                    }})
+                    }
 
-                        })
+                    // comment the next 4 lines
+
+                    document.querySelector(`#tu${infoHeadline[0]} :nth-child(2)`).innerHTML=data['count1']['upvote']
+                    document.querySelector(`#td${infoHeadline[0]} :nth-child(2)`).innerHTML=data['count1']['downvote']
+                    document.querySelector(`#tu${infoHeadline[1]} :nth-child(2)`).innerHTML=data['count2']['upvote']
+                    document.querySelector(`#td${infoHeadline[1]} :nth-child(2)`).innerHTML=data['count2']['downvote']
+
+                  
+
+                        }
+                    })
+
+                })
               
                     }
 

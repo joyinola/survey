@@ -6,9 +6,7 @@
         background-color: rgba(255, 238, 249,0.5);
         padding: 0px 30px;
 }
-a:hover{
-    /*background-color: #260230;*/
-}
+
 #gif{
 margin-bottom: 25px;
 margin-left: 20px;
@@ -131,9 +129,9 @@ height: 500px;
     padding: 100px;
     color: white;
 }
-.purple  .fa{
+/* .purple  .fa{
     color:#260339
-    }
+    } */
 
 
     body{
@@ -182,6 +180,22 @@ height: 500px;
  
 section #politics{
     line-height: 30px;
+}
+
+[data-thumbs]{
+    background-color: white;
+    color: #260339;
+    border-radius: 8px;
+    margin-left: 15px
+
+}
+.purple{
+    background-color:#260339;
+    color: white;
+    border-radius: 8px;}
+.purple .fa{
+    background-color:#260339;
+    color: rgba(255, 238, 249,0.5);
 }
 
 }

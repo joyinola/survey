@@ -52,9 +52,10 @@ class HeadLines(models.Model):
     description=models.TextField(max_length=250)
     img=models.ImageField(upload_to="images/",null=True,blank=True)
     
+    @property
     def upVotes(self):
         return Vote.objects.filter(headline=self.id,vote='Upvote').count()
-    
+    @property
     def downVotes(self):
         return Vote.objects.filter(headline=self.id,vote='Downvote').count()
     

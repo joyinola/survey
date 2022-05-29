@@ -40,8 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'survey',
     'import_export',
-    'storages',
-]
+     'storages',
+ ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -86,8 +86,8 @@ DATABASES = {
     'PASSWORD':config('PASSWORD'),
     'HOST':'ec2-54-165-184-219.compute-1.amazonaws.com',
     'PORT':5432,
-        # 'ENGINE': 'django.db.backends.sqlite3',
-        # 'NAME': BASE_DIR / 'db.sqlite3',
+    'ENGINE': 'django.db.backends.sqlite3',
+    'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 
@@ -135,11 +135,11 @@ MEDIA_ROOT=BASE_DIR/'media'
 MEDIA_URL='/media/'
 
 
-AWS_ACCESS_KEY_ID='AKIASU4A42JMHJ2FWCAB'
-AWS_SECRET_ACCESS_KEY=config('AWS_SECRET_ACCESS_KEY')
-AWS_STORAGE_BUCKET_NAME='pollsng-bucket'
+# AWS_ACCESS_KEY_ID='AKIASU4A42JMHJ2FWCAB'
+# AWS_SECRET_ACCESS_KEY=config('AWS_SECRET_ACCESS_KEY')
+# AWS_STORAGE_BUCKET_NAME='pollsng-bucket'
 
-AWS_S3_FILE_OVERWRITE=False
-AWS_DEFAULT_ACL=None
-DEFAULT_FILE_STORAGE='storages.backends.s3boto3.S3Boto3Storage'
-STATICFILES_STORAGE = 'storages.backends.s3boto3.S3StaticStorage'
+# AWS_S3_FILE_OVERWRITE=False
+# AWS_DEFAULT_ACL=None
+# DEFAULT_FILE_STORAGE='storages.backends.s3boto3.S3Boto3Storage'
+# STATICFILES_STORAGE = 'storages.backends.s3boto3.S3StaticStorage'
