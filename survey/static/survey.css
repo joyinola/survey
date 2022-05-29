@@ -55,29 +55,22 @@ height: 35px;
 img{
     display: block;
 }
-/*.thumbs, .thumbs:hover,.thumbs:focus,.thumbs:active{
-    background-color: white;
-    text-decoration: none;
-    color: inherit;
-}*/
-.fa{
+
+/* .fa{
     background-color: rgba(255, 238, 249,0.5);
-}
+} */
 .col-content a{
     background-color: rgba(255, 238, 249,0.5);
 }
-/*.fa:hover{
-    background-color: white;
-*/}
+
+
+
 .purple .fa{
 background-color: rgba(255, 238, 249,0.5);
 color:#260339
 
 }
-/*.purple .fa: hover{
-background-color:white
 
-}*/
 #code{
     background-color: #260339;
     padding: 50px;
@@ -102,7 +95,28 @@ background-color:white
     height: 35px;
 }
 
+[data-thumbs]{
+    background-color: white;
+    color: #260339;
+    border-radius: 8px;
+    width:50px;
+    height:30px;
+    font-size: 15px;
+    margin-left: 15px
 
+}
+.purple{
+    background-color:#260339;
+    color: white;
+    border-radius: 8px;
+}
+
+.purple .fa{
+    background-color:#260339;
+    color: rgba(255, 238, 249,0.5);
+}
+
+}
 
 @media only screen and (min-width:1020px) {
 
@@ -185,6 +199,8 @@ section #politics{
 [data-thumbs]{
     background-color: white;
     color: #260339;
+    width:100px;
+    height:40px;
     border-radius: 8px;
     margin-left: 15px
 
