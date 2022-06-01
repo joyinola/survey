@@ -54,10 +54,26 @@ class HeadLines(models.Model):
     
     @property
     def upVotes(self):
-        return Vote.objects.filter(headline=self.id,vote='Upvote').count()
+        prev_gen=Generation.objects.filter(is_active=False).last()
+        gen=Generation.objects.filter(is_active=True).last()
+        if gen.name=='Generation 1':
+            return 0
+
+        else:
+            return Vote.objects.filter(headline=self.id,vote='Upvote',generation=prev_gen).count()
+   
+            
     @property
     def downVotes(self):
-        return Vote.objects.filter(headline=self.id,vote='Downvote').count()
+        prev_gen=Generation.objects.filter(is_active=False).last()
+        gen=Generation.objects.filter(is_active=True).last()
+        if gen.name=='Generation 1':
+            return 0
+            
+        else:
+            return Vote.objects.filter(headline=self.id,vote='Downvote',generation=prev_gen).count()
+            
+            
     
 
     def __str__(self):
@@ -71,9 +87,20 @@ class HeadLines(models.Model):
             downvote=0
 
         return f'{self.headLine} upvote{upvote} downvote{downvote}'
+class Generation(models.Model):
+    name=models.CharField(max_length=255)
+    date_added=models.DateTimeField(auto_now_add=True)
+    is_active=models.BooleanField(default=False)
+
+    class Meta:
+        ordering=['date_added',]
+
+    def __str__(self):
+        return self.name
    
 class Utilizer(models.Model):
     prolificId=models.CharField(max_length=100)
+    generation=models.ForeignKey(Generation,on_delete=models.CASCADE,blank=True,null=True)
     gender=models.CharField(choices=Gender, max_length=50)
     age=models.CharField(choices=Age,max_length=50)
     puceTest=models.CharField(max_length=100,null=True,blank=True)
@@ -90,6 +117,7 @@ class Vote(models.Model):
     user=models.ForeignKey(Utilizer,on_delete=models.SET_NULL,null=True)
     headline=models.ForeignKey(HeadLines,on_delete=models.CASCADE)
     vote=models.CharField(choices=VoteValue,max_length=20)
+    generation=models.ForeignKey(Generation,on_delete=models.CASCADE,blank=True,null=True)
     createdAt=models.DateTimeField(auto_now_add=True)
     updatedAt=models.DateTimeField(auto_now=True,null=True)
 

@@ -1,38 +1,47 @@
 import uuid
-from django.http import JsonResponse
+from django.http import JsonResponse,HttpResponse
 from django.shortcuts import redirect, render
-from .models import HeadLines,Vote, Utilizer
+from .models import HeadLines,Vote, Utilizer,Generation
 from django.core.paginator import Paginator,PageNotAnInteger,EmptyPage
 import json  
 from django.views.decorators.csrf import csrf_exempt
 from django.core.exceptions import ObjectDoesNotExist
 # Create your views here.
 
+    
 def index(request):
     return render(request, 'survey/surveypage.html') 
 
 def updateUser(request,id):
-        user,status= Utilizer.objects.get_or_create(prolificId=id)
-
-        x_forwarded_for=request.META.get('HTTP_X_FORWARDED_FOR')
-        if x_forwarded_for:
-            ip=x_forwarded_for.split(',')[0]
-        else:
-            ip=request.META.get('REMOTE_ADDR')
-        user.ipAddress=ip
+    user,status= Utilizer.objects.get_or_create(prolificId=id)
+    try:
+        gen=Generation.objects.filter(is_active=True).last()
+        user.generation=gen
         user.save()
+        gen='Gen Found'
+    except:
+        gen='Gen not found'
 
-        response=JsonResponse('success', safe=False)
-        if ('userid' in request.COOKIES):
-            if request.COOKIES['userid']==id:
-                pass
-            else:
-                response.delete_cookie('userid')
-                response.set_cookie('userid',id,max_age=360000000)
-                return response
+
+    x_forwarded_for=request.META.get('HTTP_X_FORWARDED_FOR')
+    if x_forwarded_for:
+        ip=x_forwarded_for.split(',')[0]
+    else:
+        ip=request.META.get('REMOTE_ADDR')
+    user.ipAddress=ip
+    user.save()
+
+    response=JsonResponse(gen, safe=False)
+    if ('userid' in request.COOKIES):
+        if request.COOKIES['userid']==id:
+            pass
         else:
+            response.delete_cookie('userid')
             response.set_cookie('userid',id,max_age=360000000)
-        return response
+            return response
+    else:
+        response.set_cookie('userid',id,max_age=360000000)
+    return response
 
 
 def taskverify(request,data):
@@ -102,6 +111,7 @@ def vote(request,num:str,vote:str):
     if request.method=='POST':
         data=json.loads(request.body)
         obj=HeadLines.objects.get(id=int(num))
+        gen=Generation.objects.filter(is_active=True).last()
         #comment data
         counts={}
         user,created=Utilizer.objects.get_or_create(prolificId=request.COOKIES['userid'])
@@ -109,22 +119,22 @@ def vote(request,num:str,vote:str):
         if len(data['infoHeadline']) == 1:
             if vote=='upvote':
                 try:
-                    voted=Vote.objects.get(user=user,headline=obj,vote='Downvote')
+                    voted=Vote.objects.get(user=user,headline=obj,vote='Downvote',generation=gen)
                 except:
                     voted=None
 
                 if (voted):
                     voted.delete()
-                Vote.objects.get_or_create(user=user,headline=obj,vote='Upvote')
+                Vote.objects.get_or_create(user=user,headline=obj,vote='Upvote',generation=gen)
 
             else:
                 try:
-                    voted=Vote.objects.get(user=user,headline=obj,vote='Upvote')
+                    voted=Vote.objects.get(user=user,headline=obj,vote='Upvote',generation=gen)
                 except:
                     voted=None
                 if (voted):
                     voted.delete()
-                Vote.objects.get_or_create(user=user,headline=obj,vote='Downvote')
+                Vote.objects.get_or_create(user=user,headline=obj,vote='Downvote',generation=gen)
             #comment this
             counts['count1']={'upvote':obj.upVotes,'downvote':obj.downVotes}
             #uncomment the next line
@@ -135,32 +145,32 @@ def vote(request,num:str,vote:str):
             
             if vote=='upvote':
                 try:
-                    voted=Vote.objects.get(user=user,headline=obj,vote='Downvote')
+                    voted=Vote.objects.get(user=user,headline=obj,vote='Downvote',generation=gen)
                 except:
                     voted=None
                 if (voted):
                     voted.delete()
-                Vote.objects.get_or_create(user=user,headline=obj,vote='Upvote')
+                Vote.objects.get_or_create(user=user,headline=obj,vote='Upvote',generation=gen)
             else:
                 try:
-                    voted=Vote.objects.get(user=user,headline=obj,vote='Upvote')
+                    voted=Vote.objects.get(user=user,headline=obj,vote='Upvote',generation=gen)
                 except:
                     voted=None
                 if (voted):
                     voted.delete()
-                Vote.objects.get_or_create(user=user,headline=obj,vote='Downvote')
+                Vote.objects.get_or_create(user=user,headline=obj,vote='Downvote',generation=gen)
             
 
             if data['infoHeadline'][0]==num:
                 try:
-                    voted=Vote.objects.get(user=user,headline=obj2)
+                    voted=Vote.objects.get(user=user,headline=obj2,generation=gen)
                 except:
                     voted=None
                 if (voted):
                     voted.delete()
             else:
                 try:
-                    voted=Vote.objects.get(user=user,headline=obj1)
+                    voted=Vote.objects.get(user=user,headline=obj1,generation=gen)
                 except:
                     voted=None
                 if (voted):

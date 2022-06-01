@@ -9,16 +9,25 @@ i.addEventListener('submit',function(e){
     fetch(`/user/${id}`).then(
         response=> response.json()).then(data=> 
         {
+          if (data==='Gen not found'){
+            document.getElementById('survey_inactive').classList.remove('hidden')
+          }
+          else{
       document.getElementById('intro').classList.toggle('hidden')
-      document.getElementById('Instructions').classList.toggle('hidden')
+      document.getElementById('Instructions').classList.toggle('hidden') 
+
+    }
      // document.getElementById('testSection').classList.toggle('hidden')
         
 
            
     }).catch(err=>console.log(err))
 })}
+
+
 document.getElementById('prolific_id_page').addEventListener('click',()=>{
     document.getElementById('intro').classList.toggle('hidden')
+    document.getElementById('survey_inactive').classList.add('hidden')
     document.getElementById('Instructions').classList.toggle('hidden')
 })
 const goToTest=document.getElementsByClassName("goToTest")
