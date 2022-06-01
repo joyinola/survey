@@ -54,8 +54,9 @@ class HeadLines(models.Model):
     
     @property
     def upVotes(self):
-        prev_gen=Generation.objects.filter(is_active=False).last()
+        
         gen=Generation.objects.filter(is_active=True).last()
+        prev_gen=Generation.objects.filter(is_active=False,date_added__lt=gen.date_added).last()
         if gen.name=='Generation 1':
             return 0
 
@@ -65,8 +66,9 @@ class HeadLines(models.Model):
             
     @property
     def downVotes(self):
-        prev_gen=Generation.objects.filter(is_active=False).last()
+        
         gen=Generation.objects.filter(is_active=True).last()
+        prev_gen=Generation.objects.filter(is_active=False).last()
         if gen.name=='Generation 1':
             return 0
             
