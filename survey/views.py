@@ -109,6 +109,7 @@ def info(request):
 @csrf_exempt
 def vote(request,num:str,vote:str):
     if request.method=='POST':
+        
         data=json.loads(request.body)
         obj=HeadLines.objects.get(id=int(num))
         gen=Generation.objects.filter(is_active=True).last()

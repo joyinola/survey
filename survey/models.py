@@ -1,6 +1,8 @@
 
 from django.db import models
 from django.forms import CharField, IntegerField, URLField
+from django.db.models import Q
+from django.core.exceptions import ValidationError
 
 # Create your models here.
 Gender=[
@@ -56,24 +58,41 @@ class HeadLines(models.Model):
     def upVotes(self):
         
         gen=Generation.objects.filter(is_active=True).last()
-        prev_gen=Generation.objects.filter(is_active=False,date_added__lt=gen.date_added).last()
-        if gen.name=='Generation 1':
+        first_gen=Generation.objects.all().first()
+        prev_gen=gen.prev_gen
+        if gen.name=='Generation 1' :
             return 0
 
         else:
-            return Vote.objects.filter(headline=self.id,vote='Upvote',generation=prev_gen).count()
+            bfr_prev_gen=Generation.objects.filter(Q(id__lte=prev_gen.id),id__gte=first_gen.id)
+            vote_cnt=0
+            for i in bfr_prev_gen:
+                vote_cnt+=Vote.objects.filter(headline=self.id,vote='Upvote',generation=i).count()
+            return vote_cnt
    
             
     @property
     def downVotes(self):
         
         gen=Generation.objects.filter(is_active=True).last()
-        prev_gen=Generation.objects.filter(is_active=False).last()
+        first_gen=Generation.objects.all().first()
+        prev_gen=gen.prev_gen
         if gen.name=='Generation 1':
             return 0
             
         else:
-            return Vote.objects.filter(headline=self.id,vote='Downvote',generation=prev_gen).count()
+            bfr_prev_gen=Generation.objects.filter(Q(id__lte=prev_gen.id),id__gte=first_gen.id)
+            vote_cnt=0
+            for i in bfr_prev_gen:
+                vote_cnt+=Vote.objects.filter(headline=self.id,vote='Downvote',generation=i).count()
+            return vote_cnt
+            # vote_cnt=[Vote.objects.filter(headline=self.id,vote='Downvote',generation=i).count() for i in bfr_prev_gen]
+            # try:
+            #     return vote_cnt.count()
+            # except TypeError:
+            #     return 0
+
+
             
             
     
@@ -89,16 +108,32 @@ class HeadLines(models.Model):
             downvote=0
 
         return f'{self.headLine} upvote{upvote} downvote{downvote}'
+def get_prev_gen():
+    pass
+        # gen=Generation.objects.filter(is_active=True).last()
+        # prev_gen=Generation.objects.filter(is_active=False,date_added__lt=gen.date_added).last()
+        # return prev_gen
 class Generation(models.Model):
-    name=models.CharField(max_length=255)
+    name=models.CharField(max_length=255,unique=True)
     date_added=models.DateTimeField(auto_now_add=True)
     is_active=models.BooleanField(default=False)
+    prev_gen=models.ForeignKey('self',default=get_prev_gen(),on_delete=models.CASCADE,blank=True,null=True)
 
     class Meta:
         ordering=['date_added',]
 
     def __str__(self):
         return self.name
+    # def save(self,*args,**kwargs):
+    #     if self.is_active:
+    #         if Generation.objects.filter(Q(is_active=True),~Q(id=self.id)):
+
+    #             raise ValidationError('An active generation already exists')
+    #     return super(Generation,self).save(*args,**kwargs)
+def get_prev_gen():
+        gen=Generation.objects.filter(is_active=True).last()
+        prev_gen=Generation.objects.filter(is_active=False,date_added__lt=gen.date_added).last()
+        return prev_gen
    
 class Utilizer(models.Model):
     prolificId=models.CharField(max_length=100)
