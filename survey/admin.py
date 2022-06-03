@@ -21,14 +21,15 @@ class GenerationForm(forms.ModelForm):
 
 	class Meta:
 		model=Generation
-		fields=['name','is_active','prev_gen']
+		fields=['name','is_active']
 	def clean(self):
 		cleaned_data=self.cleaned_data
 		if cleaned_data.get('is_active')==True:
-			if Generation.objects.filter(Q(is_active=True),~Q(name=cleaned_data.get('name'))):
-				raise forms.ValidationError('An active generation already exists')
+			active_gen=Generation.objects.filter(Q(is_active=True),~Q(name=cleaned_data.get('name')))
+			if active_gen:
+				raise forms.ValidationError(f'An active generation already exists, set is_active to false on {active_gen.first().name}')
 		return self.cleaned_data
 class GenerationAdmin(admin.ModelAdmin):
 	form=GenerationForm
-	fields=['name','is_active','prev_gen']
+	fields=['name','is_active']
 admin.site.register(Generation,GenerationAdmin)

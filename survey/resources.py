@@ -2,8 +2,8 @@ from import_export import resources,fields
 from .models import HeadLines,Vote
 
 class HeadlineResource(resources.ModelResource):
-    upvote = fields.Field(attribute="upVotes", column_name="UpVote")
-    downvote =fields.Field(attribute='downVotes',column_name='DownVote')
+    upvote = fields.Field(attribute="upvote_total", column_name="Upvote")
+    downvote =fields.Field(attribute='downvote_total',column_name='Downvote')
     class Meta:
         model=HeadLines
         fields=('id','headLine','description','img','upvote','downvote')
