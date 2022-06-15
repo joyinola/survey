@@ -1,3 +1,4 @@
+from distutils.ccompiler import gen_lib_options
 import uuid
 from django.http import JsonResponse,HttpResponse
 from django.shortcuts import redirect, render
@@ -46,6 +47,7 @@ def updateUser(request,id):
 
 def taskverify(request,data):
     user=Utilizer.objects.get(prolificId=request.COOKIES['userid']) 
+    current_gen=Generation.objects.get(is_active=True)
     data=data.replace('"',"",4)
     data=data.strip('][ ').split(',')
     headline1=HeadLines.objects.get(id=int(data[0]))
@@ -53,20 +55,20 @@ def taskverify(request,data):
     vote1=None
     vote2=None
     try:
-        vote1=Vote.objects.get(headline=headline1,user=user)
+        vote1=Vote.objects.get(headline=headline1,user=user,generation=current_gen)
         # status='true'
     except:
         pass
     try:
-        vote2=Vote.objects.get(headline=headline2,user=user)
+        vote2=Vote.objects.get(headline=headline2,user=user,generation=current_gen)
         # status='true'
     except:
         pass
     if vote1 or vote2:
         status='true'
     else:
-
         status='false'
+    print(vote1,vote2)
     return JsonResponse(status, safe=False)
     # for i in headlines:
     #     try:
@@ -176,93 +178,24 @@ def vote(request,num:str,vote:str):
                     voted=None
                 if (voted):
                     voted.delete()
-            #comment the next two lines
+        
             counts['count1']={'upvote':obj1.upVotes,'downvote':obj1.downVotes}
             counts['count2']={'upvote':obj2.upVotes,'downvote':obj2.downVotes}
-            #uncomment the next line
-
-            # return JsonResponse('success',safe=False)
+       
     return JsonResponse(counts)
 
-    '''
-                if vote=='upvote':
-                    try:
-                        voted=Vote.objects.get(user=user,headline=obj1,vote='Downvote')
-                    except:
-                        voted=None
-                    if (voted):
-                        voted.delete()
-                    Vote.objects.get_or_create(user=user,headline=obj1,vote='Upvote')
-
-                    try:
-                        voted=Vote.objects.get(user=user,headline=obj2,vote='Upvote')
-                    except:
-                        voted=None
-                    if (voted):
-                        voted.delete()
-                    Vote.objects.get_or_create(user=user,headline=obj2,vote='Downvote')
-                else:
-                    try:
-                        voted=Vote.objects.get(user=user,headline=obj1,vote='Upvote')
-                    except:
-                        voted=None
-                    if (voted):
-                        voted.delete()
-                    Vote.objects.get_or_create(user=user,headline=obj1,vote='Downvote')
-
-                    try:
-                        voted=Vote.objects.get(user=user,headline=obj2,vote='Downvote')
-                    except:
-                        voted=None
-                    if (voted):
-                        voted.delete()
-                    Vote.objects.get_or_create(user=user,headline=obj2,vote='Upvote')
-                return JsonResponse('success', safe=False)
-
-            else:
-                if vote=='upvote':
-                    try:
-                        voted=Vote.objects.get(user=user,headline=obj2,vote='Downvote')
-                    except:
-                        voted=None
-                    if (voted):
-                        voted.delete()
-                    Vote.objects.get_or_create(user=user,headline=obj2,vote='Upvote')
-            
-                    try:
-                        voted=Vote.objects.get(user=user,headline=obj1,vote='Upvote')
-                    except:
-                        voted=None
-                    if (voted):
-                        voted.delete()
-                    Vote.objects.get_or_create(user=user,headline=obj1,vote='Downvote')
-                else:
-                    try:
-                        voted=Vote.objects.get(user=user,headline=obj2,vote='Upvote')
-                    except:
-                        voted=None
-                    if (voted):
-                        voted.delete()
-                    Vote.objects.get_or_create(user=user,headline=obj2,vote='Downvote')
-                    try:
-                        voted=Vote.objects.get(user=user,headline=obj1,vote='Downvote')
-                    except:
-                        voted=None
-                    if (voted):
-                        voted.delete()
-                    Vote.objects.get_or_create(user=user,headline=obj1,vote='Upvote')
-                return JsonResponse('success',safe=False) '''
 def voteCasted(request,data):
     # data='[1,2]'
     user=Utilizer.objects.get(prolificId=request.COOKIES['userid']) 
     status={}
     data=data.replace('"',"",4)
     data=data.strip('][ ').split(',')
+    current_gen=Generation.objects.get(is_active=True)
    
     if len(data)==1:
         try:
             news=HeadLines.objects.get(id=int(data[0]))
-            check=Vote.objects.get(user=user,headline=news)
+            check=Vote.objects.get(user=user,headline=news,generation=current_gen)
             if check:
                 status[f'{news.id}']=check.vote
         except:
@@ -271,7 +204,7 @@ def voteCasted(request,data):
     elif len(data)==2:
         try:
             news1=HeadLines.objects.get(id=int(data[0]))
-            check1=Vote.objects.get(user=user,headline=news1)
+            check1=Vote.objects.get(user=user,headline=news1,generation=current_gen)
             if check1:
                 status[f'{news1.id}']=check1.vote
             
@@ -279,19 +212,13 @@ def voteCasted(request,data):
             pass
         try:
             news2=HeadLines.objects.get(id=int(data[1]))
-            check2=Vote.objects.get(user=user,headline=news2)
+            check2=Vote.objects.get(user=user,headline=news2,generation=current_gen)
             if check2:
                 status[f'{news2.id}']=check2.vote
         except:
             pass
 
-        # if check1:
-        #     status[f'{news1.id}']=check1.vote
-        # if check2:
-        #     status[f'{news2.id}']=check2.vote
-            
-        # except:
-        #     pass
+    print(status)
     return JsonResponse(status)
 @csrf_exempt
 def saveTest(request):

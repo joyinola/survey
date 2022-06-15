@@ -57,6 +57,7 @@ class HeadLines(models.Model):
     @property
     def upVotes(self):
         gen=Generation.objects.filter(is_active=True).last()
+        first_gen=Generation.objects.all().order_by('date_added').first()
         if gen.name=='Generation 1' :
             return 0
         else:
@@ -83,6 +84,7 @@ class HeadLines(models.Model):
     def downVotes(self):
         
         gen=Generation.objects.filter(is_active=True).last()
+        first_gen=Generation.objects.all().order_by('date_added').first()
         if gen.name=='Generation 1' :
             return 0
         else:
