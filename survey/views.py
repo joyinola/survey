@@ -234,7 +234,7 @@ def saveTest(request):
 
 
 def updateHeadline(request,num):
-    headlines=HeadLines.objects.all()
+    headlines=HeadLines.objects.all().order_by("?")
     p=Paginator(headlines,2)
     try:
         pag=p.page(int(num))
