@@ -1,5 +1,6 @@
 from distutils.ccompiler import gen_lib_options
 import uuid
+import random
 from django.http import JsonResponse,HttpResponse
 from django.shortcuts import redirect, render
 from .models import HeadLines,Vote, Utilizer,Generation
@@ -234,13 +235,38 @@ def saveTest(request):
 
 
 def updateHeadline(request,num):
-    headlines=HeadLines.objects.all().order_by("?")
-    p=Paginator(headlines,2)
+    headlines=HeadLines.objects.all()
+    topics=[]
+    queryset=None
+    for i in headlines:
+        topic=i.headLine.split('_')[0]
+        if topic not in topics:
+            topics.append(topic)
+   
+  
+    
+    for i in random.sample(topics,len(topics)):
+        headline=HeadLines.objects.filter(headLine__startswith=i)
+
+        if queryset is not None:
+            # print(queryset)
+            queryset=queryset.union(headline[:2],all=True)
+            
+        else:
+            queryset=headline[:2]
+
+    for j in random.sample(topics,len(topics)):
+        headline=HeadLines.objects.filter(headLine__startswith=j)
+        # print(f'second batch{queryset}' )
+        queryset=queryset.union(headline[2:],all=True)
+    # print(queryset)
+    p=Paginator(queryset,2)
     try:
         pag=p.page(int(num))
     except PageNotAnInteger:
         pag=p.page(1)
     except EmptyPage:
         pag=p.page(p.num_pages)
+   
 
     return render(request, 'survey/headline.html',{'p':pag}) 

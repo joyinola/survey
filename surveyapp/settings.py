@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config('SECRET_KEY')
 # SECRET_KEY = 'jnq197nbjmg^e7&@83u67c#c)d+n!2zcmj74x%s931ys!iygm&'
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['polls-ng.herokuapp.com','127.0.0.1']
 
@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'survey',
     'import_export',
-     'storages',
+    'storages',
  ]
 
 MIDDLEWARE = [
@@ -135,11 +135,11 @@ MEDIA_ROOT=BASE_DIR/'media'
 MEDIA_URL='/media/'
 
 
-# AWS_ACCESS_KEY_ID='AKIASU4A42JMHJ2FWCAB'
-# AWS_SECRET_ACCESS_KEY=config('AWS_SECRET_ACCESS_KEY')
-# AWS_STORAGE_BUCKET_NAME='pollsng-bucket'
+AWS_ACCESS_KEY_ID='AKIASU4A42JMHJ2FWCAB'
+AWS_SECRET_ACCESS_KEY=config('AWS_SECRET_ACCESS_KEY')
+AWS_STORAGE_BUCKET_NAME='pollsng-bucket'
 
-# AWS_S3_FILE_OVERWRITE=False
-# AWS_DEFAULT_ACL=None
-# DEFAULT_FILE_STORAGE='storages.backends.s3boto3.S3Boto3Storage'
-# STATICFILES_STORAGE = 'storages.backends.s3boto3.S3StaticStorage'
+AWS_S3_FILE_OVERWRITE=False
+AWS_DEFAULT_ACL=None
+DEFAULT_FILE_STORAGE='storages.backends.s3boto3.S3Boto3Storage'
+STATICFILES_STORAGE = 'storages.backends.s3boto3.S3StaticStorage'
