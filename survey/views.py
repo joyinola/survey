@@ -263,8 +263,8 @@ def updateHeadline(request,num):
         last_set=headline[2:]
         # print(f'second batch{queryset}' )
         queryset=queryset.union(last_set,all=True)
-    print(queryset)
-    print(queryset.count())
+    # print(queryset)
+    # print(queryset.count())
     p=Paginator(queryset,2)
     try:
         pag=p.page(int(num))
