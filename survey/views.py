@@ -244,22 +244,27 @@ def updateHeadline(request,num):
             topics.append(topic)
    
   
-    
-    for i in random.sample(topics,len(topics)):
-        headline=HeadLines.objects.filter(headLine__startswith=i)
 
+    for i in random.sample(topics,len(topics)):
+        headline=HeadLines.objects.filter(headLine__startswith=i).order_by('?')
+        first_two=headline[:2]
+        
         if queryset is not None:
             # print(queryset)
-            queryset=queryset.union(headline[:2],all=True)
+            
+            queryset=queryset.union(first_two,all=True)
             
         else:
-            queryset=headline[:2]
+            queryset=first_two
+        
 
     for j in random.sample(topics,len(topics)):
-        headline=HeadLines.objects.filter(headLine__startswith=j)
+        headline=HeadLines.objects.filter(headLine__startswith=j).order_by("?")
+        last_set=headline[2:]
         # print(f'second batch{queryset}' )
-        queryset=queryset.union(headline[2:],all=True)
-    # print(queryset)
+        queryset=queryset.union(last_set,all=True)
+    print(queryset)
+    print(queryset.count())
     p=Paginator(queryset,2)
     try:
         pag=p.page(int(num))
