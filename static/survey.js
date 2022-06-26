@@ -33,17 +33,17 @@ document.getElementById('prolific_id_page').addEventListener('click',()=>{
 const goToTest=document.getElementsByClassName("goToTest")
 for(i of goToTest){
   i.addEventListener('click',()=>{
-    document.getElementById('dummy').classList.toggle('hidden')
+    document.getElementById('Instructions').classList.toggle('hidden')
     document.getElementById('testSection').classList.toggle('hidden')
   })
 }
-const dummy=document.getElementsByClassName('dummy')
-for (i of dummy){
-  i.addEventListener('click',()=>{
-    document.getElementById('Instructions').classList.toggle('hidden')
-     document.getElementById('dummy').classList.toggle('hidden')
-  })
-}
+// const dummy=document.getElementsByClassName('dummy')
+// for (i of dummy){
+//   i.addEventListener('click',()=>{
+//     document.getElementById('Instructions').classList.toggle('hidden')
+//      document.getElementById('dummy').classList.toggle('hidden')
+//   })
+// }
 const test=document.getElementsByClassName('test')
 for (const i of test){
   i.addEventListener('click', function(e){

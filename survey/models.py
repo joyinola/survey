@@ -11,18 +11,19 @@ Gender=[
     ('Other','Other')
 ]
 
-Age=[
-    ('Less than 20','Less than 20'),
-    ('20-35','20-35'),
-    ('36-45','36-45'),
-    ('Above 45','Above 45')
-]
+# Age=[
+#     ('Less than 20','Less than 20'),
+#     ('20-35','20-35'),
+#     ('36-45','36-45'),
+#     ('Above 45','Above 45')
+# ]
 Qualification=[
     ('Less than High School','Less than High School'),
     ('High School','High School'),
-    ('College Degree','College Degree'),
-    ('Doctorate Degree','Doctorate Degree'),
-    ('PhD holder','PhD holder')
+    ('Bachelor Degree','Bachelor Degree'),
+    ('Masters Degree','Masters Degree'),
+    ('Doctorate Degree','Doctorate Degree')
+    
 ]
 Interest=[
 ("Not at all Interested","Not at all Interested"),
@@ -144,7 +145,7 @@ class Utilizer(models.Model):
     prolificId=models.CharField(max_length=100)
     generation=models.ForeignKey(Generation,on_delete=models.CASCADE,blank=True,null=True)
     gender=models.CharField(choices=Gender, max_length=50)
-    age=models.CharField(choices=Age,max_length=50)
+    age=models.CharField(max_length=50)
     puceTest=models.CharField(max_length=100,null=True,blank=True)
     ipAddress=models.CharField(max_length=250)
     qualification=models.CharField(choices=Qualification,max_length=50)
