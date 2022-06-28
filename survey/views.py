@@ -219,24 +219,7 @@ def saveTest(request):
 
 
 def updateHeadline(request,num):
-    # votes=
-    # [
-    #     {'1':
-    #     {
-    #         "upvote":None,
-    #         "downvote":None
-    #     }},
-    #     {
-    #         '2':{
-    #         "upvote":None,
-    #         "downvote":None
-    #         }
-
-    #     }
-
-
-    # ]
-    # topic=HeadLines.objects.values('topics').distinct()
+  
     query_set=HeadLines.objects.all()
     votes=[ {query.id:{"upvote":query.upVotes,"downvote":query.downVotes}} for query in query_set]
     query_set_values = HeadLines.objects.values()
@@ -261,13 +244,10 @@ def updateHeadline(request,num):
     for topic in topics:
         random.shuffle(result_set[topic])
         data.extend(result_set[topic][:2])
-
-
-        
+ 
     for topic in topics:
         data.extend(result_set[topic][2:])
-    
-    
+     
     p=Paginator(data,2)
     try:
         pag=p.page(int(num))
