@@ -22,7 +22,7 @@
             <br>
             <div class="col-content">
                 <br>
-            <img name='headline', id='{{i.id}}' src="{{i.img.url}}"/>
+            <img name='headline', id='{{i.id}}' src="https://pollsng-bucket.s3.us-west-1.amazonaws.com/{{i.img}}"/>
             <!-- <br>
             <p name='headline', id='{{i.id}}'>{{i.description}}</p> -->
             <br>
@@ -31,7 +31,7 @@
 
             <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-dark">
 
-                {{i.upVotes}}
+                {{i.upvote}}
                 <span class="visually-hidden">unread messages</span>
               </span>
             
@@ -40,7 +40,7 @@
             data-vote="downvote" name="vote"><i class="fa fa-thumbs-down" aria-hidden="true"></i>
 
             <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-dark">
-                {{i.downVotes}}
+                {{i.downvote}}
                 <span class="visually-hidden">unread messages</span>
               </span>
             

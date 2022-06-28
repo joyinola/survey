@@ -17,7 +17,7 @@ i.addEventListener('submit',function(e){
       document.getElementById('Instructions').classList.toggle('hidden') 
 
     }
-     // document.getElementById('testSection').classList.toggle('hidden')
+    
         
 
            
@@ -37,13 +37,8 @@ for(i of goToTest){
     document.getElementById('testSection').classList.toggle('hidden')
   })
 }
-// const dummy=document.getElementsByClassName('dummy')
-// for (i of dummy){
-//   i.addEventListener('click',()=>{
-//     document.getElementById('Instructions').classList.toggle('hidden')
-//      document.getElementById('dummy').classList.toggle('hidden')
-//   })
-// }
+
+
 const test=document.getElementsByClassName('test')
 for (const i of test){
   i.addEventListener('click', function(e){
@@ -54,7 +49,7 @@ for (const i of test){
      document.getElementById('inputerror').classList.remove('hidden')
   }
   else{
-    // console.log('success')
+  
     fetch('/test/',
       {
       method:'POST',

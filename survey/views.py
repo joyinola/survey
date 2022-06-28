@@ -71,23 +71,7 @@ def taskverify(request,data):
         status='false'
     print(vote1,vote2)
     return JsonResponse(status, safe=False)
-    # for i in headlines:
-    #     try:
-    #         upvote=Vote.objects.get(user=user,headline=i,vote='Upvote')
-    
-    #     except ObjectDoesNotExist:
-    #         upvote=False
-
-    #     try:  
-    #         downvote=Vote.objects.get(user=user,headline=i,vote='Downvote')
-
-    #     except ObjectDoesNotExist:
-    #         downvote=False
-
-    #     if upvote==False and downvote==False:
-    #         status='false'
-
-    
+  
 @csrf_exempt
 def info(request):
     if request.method=="POST":
@@ -235,37 +219,56 @@ def saveTest(request):
 
 
 def updateHeadline(request,num):
-    headlines=HeadLines.objects.all()
-    topics=[]
-    queryset=None
-    for i in headlines:
-        topic=i.headLine.split('_')[0]
-        if topic not in topics:
-            topics.append(topic)
-   
-  
+    # votes=
+    # [
+    #     {'1':
+    #     {
+    #         "upvote":None,
+    #         "downvote":None
+    #     }},
+    #     {
+    #         '2':{
+    #         "upvote":None,
+    #         "downvote":None
+    #         }
 
-    for i in random.sample(topics,len(topics)):
-        headline=HeadLines.objects.filter(headLine__startswith=i).order_by('?')
-        first_two=headline[:2]
-        
-        if queryset is not None:
-            # print(queryset)
-            
-            queryset=queryset.union(first_two,all=True)
-            
+    #     }
+
+
+    # ]
+    # topic=HeadLines.objects.values('topics').distinct()
+    query_set=HeadLines.objects.all()
+    votes=[ {query.id:{"upvote":query.upVotes,"downvote":query.downVotes}} for query in query_set]
+    query_set_values = HeadLines.objects.values()
+
+    for record in votes:
+        for query_value in query_set_values:
+            if list(record.keys())[0] == query_value['id']:
+                query_value.update(record[list(record.keys())[0]])
+    
+
+    result_set = {}
+    for row in query_set_values:
+        if result_set.get(row["topic"]) is not None:
+            result_set[row["topic"]].append(row)
         else:
-            queryset=first_two
-        
+            result_set[row["topic"]] = [row]
 
-    for j in random.sample(topics,len(topics)):
-        headline=HeadLines.objects.filter(headLine__startswith=j).order_by("?")
-        last_set=headline[2:]
-        # print(f'second batch{queryset}' )
-        queryset=queryset.union(last_set,all=True)
-    # print(queryset)
-    # print(queryset.count())
-    p=Paginator(queryset,2)
+    topics = list(result_set.keys())
+    random.shuffle(topics)
+
+    data=[]
+    for topic in topics:
+        random.shuffle(result_set[topic])
+        data.extend(result_set[topic][:2])
+
+
+        
+    for topic in topics:
+        data.extend(result_set[topic][2:])
+    
+    
+    p=Paginator(data,2)
     try:
         pag=p.page(int(num))
     except PageNotAnInteger:
@@ -273,5 +276,5 @@ def updateHeadline(request,num):
     except EmptyPage:
         pag=p.page(p.num_pages)
    
-
     return render(request, 'survey/headline.html',{'p':pag}) 
+   
