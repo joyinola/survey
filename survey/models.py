@@ -87,7 +87,7 @@ class HeadLines(models.Model):
     def upvote_total(self):
         return Vote.objects.filter(headline=self,vote='Upvote').count()   
     def downvote_total(self):
-        return Vote.objects.filter(headline=self.vote,vote='Downvote').count()
+        return Vote.objects.filter(headline=self,vote='Downvote').count()
 
    
             

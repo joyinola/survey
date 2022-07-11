@@ -74,6 +74,7 @@ Rate all experiment before proceeding
             <button class="btn btn-primary" style="width: 120px; height: 35px;" id="info">Next Task</button>
             {%endif%}
         </div>
+        <div><p>Input Prolific Id</p></div>
             </section>
             <script src="../../../static/info.js"></script>
             <script type="text/javascript"> 
@@ -140,22 +141,7 @@ catch{
                                 document.getElementById(`td${id1}`).classList.add('purple')
                             }
                             }
-                    // else{
-
-                    //             id1=data[0][0]
-                    //             id2=data[1][0]
-                    //             vote1=data[0][1]
-                    //             vote2=data[1][1]
-                    //             if (vote1==='Upvote'){
-                    //                 document.getElementById(`tu${id1}`).classList.add('purple')
-                    //                 document.getElementById(`td${id2}`).classList.add('purple')
-                    //             }
-                    //             else{
-                    //             document.getElementById(`td${id1}`).classList.add('purple')
-                    //             document.getElementById(`tu${id2}`).classList.add('purple')
-                    //         }
-                           
-                    //         }
+     
                         })
                  }
                const vote= document.getElementsByName('vote')
@@ -174,15 +160,8 @@ catch{
         body:JSON.stringify({'infoHeadline':infoHeadline})
 }).then(response=>response.json()).then(
                         data=>{
-                            console.log(data)
-                            // if (data=='pending'){
-                            //     const links=document.getElementsByTagName('a')
-                            //     for (i of links){
-                            //         i.classList.remove('purple')
-                            //     }
-                            // }
-                        // else{
-        if (infoHeadline.length===1){
+                          
+    if (infoHeadline.length===1){
     if (value==='upvote'){
         document.getElementById(`tu${id}`).classList.add('purple')
         document.getElementById(`td${id}`).classList.remove('purple')
@@ -191,7 +170,7 @@ catch{
         document.getElementById(`td${id}`).classList.add('purple')
         document.getElementById(`tu${id}`).classList.remove('purple')
     }
-// comment the next 2 lines
+
 document.querySelector(`#tu${id} :nth-child(2)`).innerHTML=data['count1']['upvote']
 document.querySelector(`#td${id} :nth-child(2)`).innerHTML=data['count1']['downvote']
 
