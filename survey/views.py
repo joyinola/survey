@@ -42,7 +42,7 @@ def updateUser(request,id):
             pass
         else:
             response.delete_cookie('userid')
-            response.set_cookie('userid',id,max_age=360000000)
+            response.set_cookie('userid',id,max_age=600)
             return response
     else:
         response.set_cookie('userid',id,max_age=600)
