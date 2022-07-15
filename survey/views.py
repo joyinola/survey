@@ -2,12 +2,15 @@ from distutils.ccompiler import gen_lib_options
 import uuid
 import random
 from django.http import JsonResponse,HttpResponse
-from django.shortcuts import redirect, render
+from django.shortcuts import render
 from .models import HeadLines,Vote, Utilizer,Generation
 from django.core.paginator import Paginator,PageNotAnInteger,EmptyPage
 import json  
 from django.views.decorators.csrf import csrf_exempt
 from django.core.exceptions import ObjectDoesNotExist
+
+
+from .decorators import id_required
 # Create your views here.
 
     
@@ -42,10 +45,10 @@ def updateUser(request,id):
             response.set_cookie('userid',id,max_age=360000000)
             return response
     else:
-        response.set_cookie('userid',id,max_age=360000000)
+        response.set_cookie('userid',id,max_age=600)
     return response
 
-
+@id_required
 def taskverify(request,data):
     user=Utilizer.objects.get(prolificId=request.COOKIES['userid']) 
     current_gen=Generation.objects.get(is_active=True)
@@ -73,6 +76,7 @@ def taskverify(request,data):
     return JsonResponse(status, safe=False)
   
 @csrf_exempt
+@id_required
 def info(request):
     if request.method=="POST":
         data=json.loads(request.body)
@@ -95,6 +99,7 @@ def info(request):
 
 
 @csrf_exempt
+@id_required
 def vote(request,num:str,vote:str):
     if request.method=='POST':
         
@@ -170,7 +175,7 @@ def vote(request,num:str,vote:str):
        
     return JsonResponse(counts)
     
-
+@id_required
 def voteCasted(request,data):
     # data='[1,2]'
     user=Utilizer.objects.get(prolificId=request.COOKIES['userid']) 
@@ -207,7 +212,9 @@ def voteCasted(request,data):
 
     print(status)
     return JsonResponse(status)
+
 @csrf_exempt
+@id_required
 def saveTest(request):
     if request.method=='POST':
         data=json.loads(request.body)
@@ -219,7 +226,7 @@ def saveTest(request):
         return JsonResponse('false',safe=False)
 
 
-
+@id_required
 def updateHeadline(request,num):
     if 'data' in request.session:
         data=request.session['data']

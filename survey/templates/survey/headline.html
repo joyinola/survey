@@ -74,7 +74,6 @@ Rate all experiment before proceeding
             <button class="btn btn-primary" style="width: 120px; height: 35px;" id="info">Next Task</button>
             {%endif%}
         </div>
-        <div><p>Input Prolific Id</p></div>
             </section>
             <script src="../../../static/info.js"></script>
             <script type="text/javascript"> 
@@ -205,7 +204,7 @@ else{
                             document.getElementById(`td${infoHeadline[0]}`).classList.remove('purple')}
                     }
 
-                    // comment the next 4 lines
+                    
 
                     document.querySelector(`#tu${infoHeadline[0]} :nth-child(2)`).innerHTML=data['count1']['upvote']
                     document.querySelector(`#td${infoHeadline[0]} :nth-child(2)`).innerHTML=data['count1']['downvote']
