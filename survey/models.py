@@ -133,12 +133,12 @@ class Utilizer(models.Model):
 
     def is_fully_filled(self):
         instance_fields=[f.name for f in self._meta.get_fields()]
-        print(self._meta.get_fields())
+        # print(self._meta.get_fields())
 
         for j in instance_fields:
             try:
                 value=getattr(self,j)
-                print(value)
+                # print(value)
             except AttributeError:
                 continue
             if value is None or value=='':

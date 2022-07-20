@@ -9,7 +9,7 @@ i.addEventListener('submit',function(e){
 
     fetch(`/user/${id}`).then(
         response=> response.json()).then(data=> {
-          console.log(data)
+          // console.log(data)
         
         if (data==='Gen not found'){
             document.getElementById('survey_inactive').classList.remove('hidden')
@@ -53,8 +53,7 @@ document.getElementById('backToTest').addEventListener('click',()=>{
 function puce(e){
   e.preventDefault()
   const testInput=document.getElementById('testInput').value
- 
-  console.log('continue clicked')
+
 if(testInput==''){
    document.getElementById('inputerror').classList.remove('hidden')
 }
@@ -72,8 +71,15 @@ else{
     ).then(response=>response.json()).then(data=>{
     console.log(data)
     if (data==='session expired'){
+                               
       document.getElementById('expired_session').classList.remove('hidden')
-      window.location='/'
+      
+      window.onbeforeunload= ()=>{
+        window.setTimeout(()=>{
+            window.location='/'
+        },0)
+        window.onbeforeunload=null
+      }
     }
     else{
    document.getElementById('inputerror').classList.add('hidden')

@@ -84,8 +84,15 @@ else{
 }).then(response=>response.json()).then(data=>{
     console.log(data)
     if (data==='session expired'){
+                                 
         document.getElementById('expired_session').classList.remove('hidden')
-        window.location=''
+      
+        window.onbeforeunload= ()=>{
+          window.setTimeout(()=>{
+              window.location='/'
+          },0)
+          window.onbeforeunload=null
+        }
       }
       else{
     document.getElementById('info').classList.add('hidden');

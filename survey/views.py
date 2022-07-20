@@ -251,7 +251,7 @@ def voteCasted(request,data):
         except:
             pass
 
-    print(status)
+    # print(status)
     return JsonResponse(status)
 
 @csrf_exempt
@@ -275,35 +275,39 @@ def updateHeadline(request,num):
     if not is_cookie_valid(request):
         return render(request, 'survey/headline.html',{'info':'session expired'})
     else:
-        query_set=HeadLines.objects.all()
-        votes=[ {query.id:{"upvote":query.upVotes,"downvote":query.downVotes}} for query in query_set]
-        query_set_values = HeadLines.objects.values()
+        if 'data' not in request.session:
+            query_set=HeadLines.objects.all()
+            votes=[ {query.id:{"upvote":query.upVotes,"downvote":query.downVotes}} for query in query_set]
+            query_set_values = HeadLines.objects.values()
 
-        for record in votes:
-            for query_value in query_set_values:
-                if list(record.keys())[0] == query_value['id']:
-                    query_value.update(record[list(record.keys())[0]])
+            for record in votes:
+                for query_value in query_set_values:
+                    if list(record.keys())[0] == query_value['id']:
+                        query_value.update(record[list(record.keys())[0]])
+            
+
+            result_set = {}
+            for row in query_set_values:
+                if result_set.get(row["topic"]) is not None:
+                    result_set[row["topic"]].append(row)
+                else:
+                    result_set[row["topic"]] = [row]
+
+            topics = list(result_set.keys())
+            random.shuffle(topics)
+
+            data=[]
+            for topic in topics:
+                random.shuffle(result_set[topic])
+                data.extend(result_set[topic][:2])
         
+            for topic in topics:
+                data.extend(result_set[topic][2:])
+            request.session['data']=data
+            request.session.set_expiry(0)
+        else:
+            data=request.session['data']
 
-        result_set = {}
-        for row in query_set_values:
-            if result_set.get(row["topic"]) is not None:
-                result_set[row["topic"]].append(row)
-            else:
-                result_set[row["topic"]] = [row]
-
-        topics = list(result_set.keys())
-        random.shuffle(topics)
-
-        data=[]
-        for topic in topics:
-            random.shuffle(result_set[topic])
-            data.extend(result_set[topic][:2])
-    
-        for topic in topics:
-            data.extend(result_set[topic][2:])
-        request.session['data']=data
-        request.session.set_expiry(0)
     # request.session.set_expiry(1)
 
     request.session.clear_expired()
