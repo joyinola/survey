@@ -18,7 +18,7 @@
     <link rel='stylesheet' type='text/css' media='screen' href='../../static/survey.css'>
 </head>
 <body>
-   
+    <div id="expired_session" class="hidden alert alert-danger"> Session expired. Please, refresh page</div>
     <section id="intro" >
         <header>
 
@@ -47,6 +47,8 @@
         <p>-       If you have any questions or comments you can contact the experimenter at:gafari.lukumon@um6p.ma Thanks.
         </p>
         <p id='survey_inactive' class='hidden alert alert-warning' > Survey Not Active, Please Try Again Later</p>
+        <p id='id_voted' class='hidden alert alert-warning' > Prolific Id already in use</p>
+        
         <input type="submit" class='btn btn-primary' value="Next"/>
     </form>
     </section>
@@ -60,14 +62,7 @@
         <button type="submit" id="prolific_id_page" class=" btn btn-primary"> Back</button>
         <button type="submit" class=" goToTest btn btn-primary">Continue</button>
     </section>
-    <!-- <section>
-        <div id ="dummy" class='hidden'>
-            <img id='gif' src="{%static 'images/new_gif_cropped.gif'%}" >
-        <button type="submit" class="dummy btn btn-primary"> Back</button>
-        <button type="submit" class=" goToTest btn btn-primary">Continue</button>
-    
-        </div>
-    </section> -->
+  
     <section id='testSection'class="hidden">
         <p>The colour test is simple, when asked for your favourite colour you must enter the word<strong> puce </strong>  in the text box below.
             Based on the text you read above, what colour have you been asked to enter?
@@ -81,7 +76,7 @@
         </div>
         <br>
 
-        <button type="submit" class="goToTest btn btn-primary"> Back</button>
+        <button type="button" class="goToTest btn btn-primary"> Back</button>
         <button type="submit" class="test btn btn-primary">Continue</button>
         </form>
        
@@ -96,7 +91,7 @@ Good luck!
 <br>
         </p>
    
-        <button type="submit" class="test btn btn-primary"> Back</button>
+        <button type="submit" id='backToTest' class=" btn btn-primary"> Back</button>
         <button type="submit" id="headlines2" class="healines btn btn-primary"> Continue</button>
     </section>
 

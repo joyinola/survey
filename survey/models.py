@@ -1,5 +1,4 @@
 
-from dataclasses import field
 from django.db import models
 from django.forms import CharField, IntegerField, URLField
 from django.db.models import Q
@@ -51,7 +50,7 @@ VoteValue=[
 ("Upvote","Upvote"),
 ("Downvote","Downvote")]
 
-class HeadLines(models.Model):
+class Headline(models.Model):
     headLine=models.CharField(max_length=100)
     description=models.TextField(max_length=250)
     img=models.ImageField(upload_to="images/",null=True,blank=True)
@@ -132,9 +131,32 @@ class Utilizer(models.Model):
     def __str__(self):
         return self.prolificId
 
+    def is_fully_filled(self):
+        instance_fields=[f.name for f in self._meta.get_fields()]
+        print(self._meta.get_fields())
+
+        for j in instance_fields:
+            try:
+                value=getattr(self,j)
+                print(value)
+            except AttributeError:
+                continue
+            if value is None or value=='':
+                return False
+        return True
+    def voted_completely(self):
+        headlines=Headline.objects.all().count()
+        user_vote_count=Vote.objects.filter(user=self).count()
+        if user_vote_count==headlines/2:
+            return True
+        else:
+            return False
+    
+    def clear_vote(self):
+        Vote.objects.filter(user=self).delete()
 class Vote(models.Model):
     user=models.ForeignKey(Utilizer,on_delete=models.SET_NULL,null=True)
-    headline=models.ForeignKey(HeadLines,on_delete=models.CASCADE)
+    headline=models.ForeignKey(Headline,on_delete=models.CASCADE)
     vote=models.CharField(choices=VoteValue,max_length=20)
     generation=models.ForeignKey(Generation,on_delete=models.CASCADE,blank=True,null=True)
     createdAt=models.DateTimeField(auto_now_add=True)

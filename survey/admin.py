@@ -16,7 +16,7 @@ admin.site.register(Vote,VoteAdmin)
 
 class HeadlineAdmin(ImportExportModelAdmin,admin.ModelAdmin):
 	resource_class=HeadlineResource
-admin.site.register(HeadLines,HeadlineAdmin)
+admin.site.register(Headline,HeadlineAdmin)
 class GenerationForm(forms.ModelForm):
 
 	class Meta:

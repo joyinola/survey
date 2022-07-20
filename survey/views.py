@@ -1,29 +1,53 @@
+
 from distutils.ccompiler import gen_lib_options
 import uuid
 import random
 from django.http import JsonResponse,HttpResponse
 from django.shortcuts import render
-from .models import HeadLines,Vote, Utilizer,Generation
+from .models import Headline as HeadLines,Vote, Utilizer,Generation
 from django.core.paginator import Paginator,PageNotAnInteger,EmptyPage
 import json  
 from django.views.decorators.csrf import csrf_exempt
 from django.core.exceptions import ObjectDoesNotExist
-
+from http.cookies import SimpleCookie
+from datetime import datetime
 
 from .decorators import id_required
 # Create your views here.
 
-    
+
+def is_cookie_valid(request):
+
+    if 'userid' in request.COOKIES:
+        return True 
+    return False
+    # val= request.META['HTTP_COOKIE']
+    # c=SimpleCookie()
+    # c.load(val)
+    # expires=c['userid']['expires']
+    # if datetime.strptime(expires,"").date()>datetime.now():
+    #         return True
+    # return False
+
+
+
+
 def index(request):
     return render(request, 'survey/surveypage.html') 
 
 def updateUser(request,id):
     user,status= Utilizer.objects.get_or_create(prolificId=id)
+    if status==False:
+        if user.voted_completely()==True and user.is_fully_filled()==True:
+            return JsonResponse('user voted',safe=False)
+        else:
+            user.clear_vote()
+
     try:
         gen=Generation.objects.filter(is_active=True).last()
         user.generation=gen
         user.save()
-        gen='Gen Found'
+        gen='Gen found'
     except:
         gen='Gen not found'
 
@@ -48,8 +72,10 @@ def updateUser(request,id):
         response.set_cookie('userid',id,max_age=600)
     return response
 
-@id_required
+# @id_required
 def taskverify(request,data):
+    if not is_cookie_valid(request):
+        return JsonResponse('session expired',safe=False)
     user=Utilizer.objects.get(prolificId=request.COOKIES['userid']) 
     current_gen=Generation.objects.get(is_active=True)
     data=data.replace('"',"",4)
@@ -76,31 +102,44 @@ def taskverify(request,data):
     return JsonResponse(status, safe=False)
   
 @csrf_exempt
-@id_required
+# @id_required
 def info(request):
+    if not is_cookie_valid(request):
+        return JsonResponse('session expired',safe=False)
     if request.method=="POST":
+        user=Utilizer.objects.get(prolificId=request.COOKIES['userid'])  
         data=json.loads(request.body)
-        user=Utilizer.objects.get(prolificId=request.COOKIES['userid'])
-        user.age=data['userInfo']['age']
-        user.qualification=data['userInfo']['qualifications']
-        user.gender=data['userInfo']['gender']
-        user.politicalInterest=data['userInfo']['interest']
-        user.presidentialCandidate=data['userInfo']['candidate']
-        user.party=data['userInfo']['republican']
-        myuuid=uuid.uuid4()
-        if not user.confirmationCode:
-            user.confirmationCode=myuuid
-        user.save()
-        del request.COOKIES['userid']
+        if 'userInfo1' in data:
+            
+            user.age=data['userInfo1']['age']
+            user.qualification=data['userInfo1']['qualifications']
+            user.gender=data['userInfo1']['gender']
+            user.save()
 
-        return JsonResponse(user.confirmationCode, safe=False)
+            return JsonResponse('sucess',safe=False)
+        else:
+
+            user.politicalInterest=data['userInfo']['interest']
+            user.presidentialCandidate=data['userInfo']['candidate']
+            user.party=data['userInfo']['republican']
+            myuuid=uuid.uuid4()
+            if not user.confirmationCode:
+                user.confirmationCode=myuuid
+            user.save()
+            del request.COOKIES['userid']
+            del request.session['data']
+
+
+            return JsonResponse(user.confirmationCode, safe=False)
 
     return render(request, 'survey/info.html')
 
 
 @csrf_exempt
-@id_required
+# @id_required
 def vote(request,num:str,vote:str):
+    if not is_cookie_valid(request):
+        return JsonResponse('session expired',safe=False)
     if request.method=='POST':
         
         data=json.loads(request.body)
@@ -175,9 +214,11 @@ def vote(request,num:str,vote:str):
        
     return JsonResponse(counts)
     
-@id_required
+# @id_required
 def voteCasted(request,data):
     # data='[1,2]'
+    if not is_cookie_valid(request):
+        return JsonResponse('session expired',safe=False)
     user=Utilizer.objects.get(prolificId=request.COOKIES['userid']) 
     status={}
     data=data.replace('"',"",4)
@@ -214,8 +255,11 @@ def voteCasted(request,data):
     return JsonResponse(status)
 
 @csrf_exempt
-@id_required
+# @id_required
 def saveTest(request):
+    
+    if not is_cookie_valid(request):
+        return JsonResponse('session expired',safe=False)
     if request.method=='POST':
         data=json.loads(request.body)
         user=Utilizer.objects.get(prolificId=request.COOKIES['userid'])
@@ -226,10 +270,10 @@ def saveTest(request):
         return JsonResponse('false',safe=False)
 
 
-@id_required
+# @id_required
 def updateHeadline(request,num):
-    if 'data' in request.session:
-        data=request.session['data']
+    if not is_cookie_valid(request):
+        return render(request, 'survey/headline.html',{'info':'session expired'})
     else:
         query_set=HeadLines.objects.all()
         votes=[ {query.id:{"upvote":query.upVotes,"downvote":query.downVotes}} for query in query_set]

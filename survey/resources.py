@@ -1,5 +1,5 @@
 from import_export import resources,fields
-from .models import HeadLines,Vote
+from .models import Headline as HeadLines,Vote
 
 class HeadlineResource(resources.ModelResource):
     upvote = fields.Field(attribute="upvote_total", column_name="Upvote_Total")

@@ -18,7 +18,7 @@
 
 </head>
 <body>
-    
+    <div id="expired_session" class="hidden alert alert-danger"> Session expired. Please, refresh page</div>
     <section id="info">
         <section id="gender">
             <br>
@@ -62,13 +62,13 @@
         </select>
         <br>
         <br>
-        <button id="headlines" onclick="location.href='/headlines/1'" class='btn'>Back</button>
-        <button class="genInfo btn ">Continue</button>
+        <!-- <button id="headlines" onclick="location.href='/headlines/1'" class='btn'>Back</button> -->
+        <button id ='genInfo' class="btn ">Continue</button>
     </section>
 
         <div class='hidden alert alert-danger' id='selectItem'>
              
-        FILL OUT ALL FORMS BEFORE PROCEEDING
+        <p id="error"></p>
     </div>
         <section id="politics" class='hidden'>
             <br>
@@ -110,13 +110,11 @@
         </select>
         <br>
         <br>
-        <button class="genInfo btn">Back</button>
+        <button id='backToGen' class="btn">Back</button>
         <button id="submitInfo" style="width: 175px; height: 35px;" class='btn'>Submit experiment</button>
     </section>
     
        
-
-   
     
     <section id="code" class="hidden">
         <div id="confirmcode">

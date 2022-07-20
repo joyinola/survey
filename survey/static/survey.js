@@ -4,20 +4,26 @@ i.addEventListener('submit',function(e){
     e.preventDefault()
     
     console.log('next clicked')
+    document.getElementById('id_voted').classList.add('hidden')
     const id=document.getElementById('id').value;
 
     fetch(`/user/${id}`).then(
-        response=> response.json()).then(data=> 
-        {
-          if (data==='Gen not found'){
+        response=> response.json()).then(data=> {
+          console.log(data)
+        
+        if (data==='Gen not found'){
             document.getElementById('survey_inactive').classList.remove('hidden')
           }
-          else{
+      else if(data==='Gen found'){
       document.getElementById('intro').classList.toggle('hidden')
       document.getElementById('Instructions').classList.toggle('hidden') 
 
     }
-     // document.getElementById('testSection').classList.toggle('hidden')
+    else if(data==='user voted'){
+  
+      document.getElementById('id_voted').classList.remove('hidden')
+    }
+    
         
 
            
@@ -33,50 +39,63 @@ document.getElementById('prolific_id_page').addEventListener('click',()=>{
 const goToTest=document.getElementsByClassName("goToTest")
 for(i of goToTest){
   i.addEventListener('click',()=>{
-    document.getElementById('dummy').classList.toggle('hidden')
+
+    document.getElementById('Instructions').classList.toggle('hidden')
     document.getElementById('testSection').classList.toggle('hidden')
   })
 }
-const dummy=document.getElementsByClassName('dummy')
-for (i of dummy){
-  i.addEventListener('click',()=>{
-    document.getElementById('Instructions').classList.toggle('hidden')
-     document.getElementById('dummy').classList.toggle('hidden')
-  })
+document.getElementById('backToTest').addEventListener('click',()=>{
+  document.getElementById('Instructions').classList.add('hidden')
+  document.getElementById('headlines1').classList.add('hidden')
+
+  document.getElementById('testSection').classList.remove('hidden')
+})
+function puce(e){
+  e.preventDefault()
+  const testInput=document.getElementById('testInput').value
+ 
+  console.log('continue clicked')
+if(testInput==''){
+   document.getElementById('inputerror').classList.remove('hidden')
 }
+else{
+
+  fetch('/test/',
+    {
+    method:'POST',
+    headers:
+    {
+      'Content-Type':'application/json'
+    },
+    body:JSON.stringify({'testInput':testInput})
+  }
+    ).then(response=>response.json()).then(data=>{
+    console.log(data)
+    if (data==='session expired'){
+      document.getElementById('expired_session').classList.remove('hidden')
+      window.location='/'
+    }
+    else{
+   document.getElementById('inputerror').classList.add('hidden')
+   document.getElementById('Instructions').classList.add('hidden')
+    document.getElementById('testSection').classList.toggle('hidden')
+    document.getElementById('headlines1').classList.toggle('hidden')}
+  })
+
+  }
+  
+}
+
 const test=document.getElementsByClassName('test')
 for (const i of test){
-  i.addEventListener('click', function(e){
-    const testInput=document.getElementById('testInput').value
-    e.preventDefault()
-    console.log('continue clicked')
-  if(testInput==''){
-     document.getElementById('inputerror').classList.remove('hidden')
-  }
-  else{
-    // console.log('success')
-    fetch('/test/',
-      {
-      method:'POST',
-      headers:
-      {
-        'Content-Type':'application/json'
-      },
-      body:JSON.stringify({'testInput':testInput})
-    }
-      ).then(response=>response.json()).then(data=>{
-      console.log(data)
-     document.getElementById('inputerror').classList.add('hidden')
-      document.getElementById('testSection').classList.toggle('hidden')
-      document.getElementById('headlines1').classList.toggle('hidden')})
+  i.addEventListener('click', (e)=>{puce(e)})
 
-    }
-      
-     
-    
-  }
-  ) }
-  document.getElementById('headlines2').addEventListener('click',()=>{
+  
+}
+// document.getElementById('puceform').addEventListener('submit',(e)=>{
+//   e.preventDefault()
+//   puce(e)})
+document.getElementById('headlines2').addEventListener('click',()=>{
    
 
     window.location.href="/headlines/1"

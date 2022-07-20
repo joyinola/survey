@@ -4,6 +4,7 @@
 from django.shortcuts import redirect
 
 def id_required(func):
+   
 
     def redirect_url():
         return redirect('index')
@@ -15,7 +16,4 @@ def id_required(func):
             return redirect_url()
     return wrapper_func
 
-    '''
-    index=id_required(index)
-    
-    '''
+   

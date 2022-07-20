@@ -14,6 +14,10 @@
         <link rel='stylesheet' type='text/css' media='screen' href='../../static/survey.css'>
     </head>  
     <body>
+        <div id="expired_session" class="hidden alert alert-danger"> Session expired. Please, refresh page</div>
+        <!-- {%if info%}
+        <div class=" alert alert-danger"> Session expired. Please, refresh page</div>
+        {%endif%} -->
         <section id="headlinebody">
             <div class="container">
         <div id ='headlineRow' class="row">
@@ -105,11 +109,16 @@ catch{
               fetch(`/validatetask/${JSON.stringify(infoHeadline)}`).then(
                 response=>response.json()).then(data=>{
                     console.log(data)
-                    
+                    if (data==='session expired'){
+      document.getElementById('expired_session').classList.remove('hidden')
+      window.location=''
+    }
+    else{
                 if(data==='false'){
                      document.getElementById('taskuncomplete').classList.remove('hidden')
                      
                 }
+                
                 else{
             console.log(i.dataset.url)
             document.getElementById('taskuncomplete').classList.add('hidden')
@@ -117,12 +126,25 @@ catch{
 
 
 
-            })
+                }}
+            )
             })
             }
             window.onload=()=>{
                     fetch(`/vc/${JSON.stringify(infoHeadline)}`).then(response=>response.json()).then(
                         data=>{
+                            if (data==='session expired'){
+                            
+      document.getElementById('expired_session').classList.remove('hidden')
+      
+      window.onbeforeunload= ()=>{
+        window.setTimeout(()=>{
+            window.location='/'
+        },0)
+        window.onbeforeunload=null
+      }
+    }
+    else{
                             data=Object.entries(data)
                             console.log(data)
                     if (data.length===0){
@@ -140,8 +162,7 @@ catch{
                                 document.getElementById(`td${id1}`).classList.add('purple')
                             }
                             }
-     
-                        })
+            }})
                  }
                const vote= document.getElementsByName('vote')
                for( i of vote){
@@ -159,7 +180,11 @@ catch{
         body:JSON.stringify({'infoHeadline':infoHeadline})
 }).then(response=>response.json()).then(
                         data=>{
-                          
+                            if (data==='session expired'){
+      document.getElementById('expired_session').classList.remove('hidden')
+      window.location=''
+    }
+    else{
     if (infoHeadline.length===1){
     if (value==='upvote'){
         document.getElementById(`tu${id}`).classList.add('purple')
@@ -213,8 +238,8 @@ else{
 
                   
 
-                        }
-                    })
+                        }}}
+                        )
 
                 })
               
@@ -227,12 +252,18 @@ else{
                    info.addEventListener('click',()=>{
                        fetch(`/validatetask/${JSON.stringify(infoHeadline)}`).then(response=>response.json()).then(
                         data=>{ 
+                            if (data==='session expired'){
+      document.getElementById('expired_session').classList.remove('hidden')
+      window.location=''
+    }
+    else{
+
                             if (data==='true'){
                             window.location.href='{%url "info"%}'
                         }
                         else{
                             document.getElementById('taskuncomplete').classList.remove('hidden')
-                        }
+                        }}
               
                     })
     
