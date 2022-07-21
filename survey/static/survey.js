@@ -69,7 +69,7 @@ else{
     body:JSON.stringify({'testInput':testInput})
   }
     ).then(response=>response.json()).then(data=>{
-    console.log(data)
+    // console.log(data)
     if (data==='session expired'){
                                
       document.getElementById('expired_session').classList.remove('hidden')

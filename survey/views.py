@@ -21,13 +21,6 @@ def is_cookie_valid(request):
     if 'userid' in request.COOKIES:
         return True 
     return False
-    # val= request.META['HTTP_COOKIE']
-    # c=SimpleCookie()
-    # c.load(val)
-    # expires=c['userid']['expires']
-    # if datetime.strptime(expires,"").date()>datetime.now():
-    #         return True
-    # return False
 
 
 
@@ -36,6 +29,8 @@ def index(request):
     return render(request, 'survey/surveypage.html') 
 
 def updateUser(request,id):
+    if 'data' in request.session:
+        del request.session['data']
     user,status= Utilizer.objects.get_or_create(prolificId=id)
     if status==False:
         if user.voted_completely()==True and user.is_fully_filled()==True:
@@ -75,6 +70,7 @@ def updateUser(request,id):
 # @id_required
 def taskverify(request,data):
     if not is_cookie_valid(request):
+        del request.session['data']
         return JsonResponse('session expired',safe=False)
     user=Utilizer.objects.get(prolificId=request.COOKIES['userid']) 
     current_gen=Generation.objects.get(is_active=True)
@@ -104,9 +100,12 @@ def taskverify(request,data):
 @csrf_exempt
 # @id_required
 def info(request):
-    if not is_cookie_valid(request):
-        return JsonResponse('session expired',safe=False)
+    
     if request.method=="POST":
+        if not is_cookie_valid(request):
+            if 'data' in request.session:
+                del request.session['data']
+            return JsonResponse('session expired',safe=False)
         user=Utilizer.objects.get(prolificId=request.COOKIES['userid'])  
         data=json.loads(request.body)
         if 'userInfo1' in data:
@@ -139,6 +138,7 @@ def info(request):
 # @id_required
 def vote(request,num:str,vote:str):
     if not is_cookie_valid(request):
+        del request.session['data']
         return JsonResponse('session expired',safe=False)
     if request.method=='POST':
         
@@ -218,6 +218,7 @@ def vote(request,num:str,vote:str):
 def voteCasted(request,data):
     # data='[1,2]'
     if not is_cookie_valid(request):
+        del request.session['data']
         return JsonResponse('session expired',safe=False)
     user=Utilizer.objects.get(prolificId=request.COOKIES['userid']) 
     status={}
@@ -259,6 +260,7 @@ def voteCasted(request,data):
 def saveTest(request):
     
     if not is_cookie_valid(request):
+        
         return JsonResponse('session expired',safe=False)
     if request.method=='POST':
         data=json.loads(request.body)
@@ -273,6 +275,7 @@ def saveTest(request):
 # @id_required
 def updateHeadline(request,num):
     if not is_cookie_valid(request):
+        
         return render(request, 'survey/headline.html',{'info':'session expired'})
     else:
         if 'data' not in request.session:
