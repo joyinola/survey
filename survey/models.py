@@ -11,12 +11,7 @@ Gender=[
     ('Other','Other')
 ]
 
-# Age=[
-#     ('Less than 20','Less than 20'),
-#     ('20-35','20-35'),
-#     ('36-45','36-45'),
-#     ('Above 45','Above 45')
-# ]
+
 Qualification=[
     ('Less than High School','Less than High School'),
     ('High School','High School'),
@@ -161,4 +156,8 @@ class Vote(models.Model):
     generation=models.ForeignKey(Generation,on_delete=models.CASCADE,blank=True,null=True)
     createdAt=models.DateTimeField(auto_now_add=True)
     updatedAt=models.DateTimeField(auto_now=True,null=True)
+    
+
+    def __str__(self):
+        return f'{self.user} voted {self.vote} on {self.headline}'
 

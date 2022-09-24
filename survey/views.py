@@ -68,26 +68,27 @@ def updateUser(request,id):
     return response
 
 # @id_required
-def taskverify(request,data):
+@csrf_exempt
+def taskverify(request):
     if not is_cookie_valid(request):
         del request.session['data']
-        return JsonResponse('session expired',safe=False)
+        return JsonResponse('session_expired',safe=False)
     user=Utilizer.objects.get(prolificId=request.COOKIES['userid']) 
     current_gen=Generation.objects.get(is_active=True)
-    data=data.replace('"',"",4)
-    data=data.strip('][ ').split(',')
+    data=json.loads(request.body)
+
     headline1=HeadLines.objects.get(id=int(data[0]))
     headline2=HeadLines.objects.get(id=int(data[1]))
     vote1=None
     vote2=None
     try:
         vote1=Vote.objects.get(headline=headline1,user=user,generation=current_gen)
-        # status='true'
+      
     except:
         pass
     try:
         vote2=Vote.objects.get(headline=headline2,user=user,generation=current_gen)
-        # status='true'
+       
     except:
         pass
     if vote1 or vote2:
@@ -98,7 +99,7 @@ def taskverify(request,data):
     return JsonResponse(status, safe=False)
   
 @csrf_exempt
-# @id_required
+
 def info(request):
     
     if request.method=="POST":
@@ -135,8 +136,9 @@ def info(request):
 
 
 @csrf_exempt
-# @id_required
+
 def vote(request,num:str,vote:str):
+    print(is_cookie_valid(request))
     if not is_cookie_valid(request):
         del request.session['data']
         return JsonResponse('session expired',safe=False)
@@ -170,8 +172,7 @@ def vote(request,num:str,vote:str):
                 Vote.objects.get_or_create(user=user,headline=obj,vote='Downvote',generation=gen)
             
             counts['count1']={'upvote':obj.upVotes,'downvote':obj.downVotes}
-            #uncomment the next line
-            # return JsonResponse('success',safe=False)
+           
         else:
             obj1=HeadLines.objects.get(id=int(data['infoHeadline'][0]))
             obj2=HeadLines.objects.get(id=int(data['infoHeadline'][1]))
@@ -215,48 +216,52 @@ def vote(request,num:str,vote:str):
     return JsonResponse(counts)
     
 # @id_required
-def voteCasted(request,data):
-    # data='[1,2]'
+@csrf_exempt
+def voteCasted(request):
+   
+  
     if not is_cookie_valid(request):
         del request.session['data']
-        return JsonResponse('session expired',safe=False)
-    user=Utilizer.objects.get(prolificId=request.COOKIES['userid']) 
-    status={}
-    data=data.replace('"',"",4)
-    data=data.strip('][ ').split(',')
-    current_gen=Generation.objects.get(is_active=True)
-   
-    if len(data)==1:
-        try:
-            news=HeadLines.objects.get(id=int(data[0]))
-            check=Vote.objects.get(user=user,headline=news,generation=current_gen)
-            if check:
-                status[f'{news.id}']=check.vote
-        except:
-            pass
+        return JsonResponse("session_expired",safe=False)
+    else:
 
-    elif len(data)==2:
-        try:
-            news1=HeadLines.objects.get(id=int(data[0]))
-            check1=Vote.objects.get(user=user,headline=news1,generation=current_gen)
-            if check1:
-                status[f'{news1.id}']=check1.vote
-            
-        except:
-            pass
-        try:
-            news2=HeadLines.objects.get(id=int(data[1]))
-            check2=Vote.objects.get(user=user,headline=news2,generation=current_gen)
-            if check2:
-                status[f'{news2.id}']=check2.vote
-        except:
-            pass
+        user=Utilizer.objects.get(prolificId=request.COOKIES['userid']) 
+        status={}
+        data=json.loads(request.body)
+    
+        current_gen=Generation.objects.get(is_active=True)
+    
+        if len(data)==1:
+            try:
+                news=HeadLines.objects.get(id=int(data[0]))
+                check=Vote.objects.get(user=user,headline=news,generation=current_gen)
+                if check:
+                    status[f'{news.id}']=check.vote
+            except:
+                pass
 
-    # print(status)
-    return JsonResponse(status)
+        elif len(data)==2:
+            try:
+                news1=HeadLines.objects.get(id=int(data[0]))
+                check1=Vote.objects.get(user=user,headline=news1,generation=current_gen)
+                if check1:
+                    status[f'{news1.id}']=check1.vote
+                
+            except:
+                pass
+            try:
+                news2=HeadLines.objects.get(id=int(data[1]))
+                check2=Vote.objects.get(user=user,headline=news2,generation=current_gen)
+                if check2:
+                    status[f'{news2.id}']=check2.vote
+            except:
+                pass
+
+    
+        return JsonResponse(status)
 
 @csrf_exempt
-# @id_required
+
 def saveTest(request):
     
     if not is_cookie_valid(request):

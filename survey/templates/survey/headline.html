@@ -28,8 +28,7 @@
             <div class="col-content">
                 <br>
             <img name='headline', id='{{i.id}}' src="https://pollsng-bucket.s3.us-west-1.amazonaws.com/{{i.img}}"/>
-            <!-- <br>
-            <p name='headline', id='{{i.id}}'>{{i.description}}</p> -->
+        
             <br>
             <button data-id='{{i.id}}' class='thumbs position-relative' data-thumbs="thumbs" href="#" data-page="{{p.number}}" id='tu{{i.id}}' 
             data-vote="upvote" name="vote"> <i class="fa fa-thumbs-up" aria-hidden="true"></i>
@@ -50,13 +49,7 @@
               </span>
             
             </button>
-            <!-- <a data-id='{{i.id}}' class='thumbs' href="#" data-page="{{p.number}}" id='tu{{i.id}}' 
-                data-vote="upvote" name="vote"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i></a>
-
-            
-           <a data-id='{{i.id}}' class='thumbs' href="#" data-page="{{p.number}}" id="td{{i.id}}" 
-           data-vote="downvote" name="vote"> <i class="fa fa-thumbs-o-down" aria-hidden="true"></i></a> -->
-       </div>
+         </div>
         </div>
             {%endfor%}
 
@@ -64,7 +57,7 @@
 
     </div>
     <div id="taskuncomplete" class="hidden alert alert-danger">
-Rate all experiment before proceeding
+Please provide an upvote or downvote before proceeding
     </div>
     <br>
     <div class='votebtn'>
@@ -74,9 +67,11 @@ Rate all experiment before proceeding
             {%if p.has_next%}
         
             <button class="btn btn-primary vote nextheadlines" data-href="{%url 'updateHeadline' p.next_page_number%}">Next</button>
-            <!-- {%url 'updateHeadline' p.next_page_number%} -->
+          
             {%else%}
-            <button class="btn btn-primary" style="width: 120px; height: 35px;" id="info">Next Task</button>
+            <div id="headline_next" style="display:inline-block">
+            <button class="btn btn-primary" style="width: 120px; height: 35px;"  id="info">Next Task</button>
+           </div>
             {%endif%}
         </div>
             </section>
@@ -103,23 +98,27 @@ catch{
 
             for (i of document.getElementsByClassName('nextheadlines')){
             const url=i.dataset.href
-            console.log(url)
+            
             i.addEventListener('click',(e)=>{
             // e.preventDefault()
             
-              fetch(`/validatetask/${JSON.stringify(infoHeadline)}`).then(
+            fetch(`/validatetask/`,
+            {
+                method:"POST",
+                headers:{"Content-Type":"application/json"},
+                body:JSON.stringify(infoHeadline)}).then(
                 response=>response.json()).then(data=>{
-                    console.log(data)
-                    if (data==='session expired'){
+                    
+                    if (data==="session_expired"){
                                 
-                        document.getElementById('expired_session').classList.remove('hidden')
+                document.getElementById('expired_session').classList.remove('hidden')
+                document.getElementsByClassName('votebtn')[0].classList.add('hidden')
       
-      window.onbeforeunload= ()=>{
+        window.onbeforeunload= ()=>{
         window.setTimeout(()=>{
             window.location='/'
         },0)
-        window.onbeforeunload=null
-      }
+        window.onbeforeunload=null}
     }
     else{
                 if(data==='false'){
@@ -128,7 +127,7 @@ catch{
                 }
                 
                 else{
-            console.log(i.dataset.url)
+        
             document.getElementById('taskuncomplete').classList.add('hidden')
             window.location=url}
 
@@ -136,14 +135,25 @@ catch{
 
                 }}
             )
+            
+            
+
+    
             })
             }
             window.onload=()=>{
-                    fetch(`/vc/${JSON.stringify(infoHeadline)}`).then(response=>response.json()).then(
-                        data=>{
-                            if (data==='session expired'){
+                    fetch("/votecasted/",
+                    {
+                        method:"POST",
+                        headers:{"Content-Type":"application/json"},
+                        body: JSON.stringify(infoHeadline),
+                    }).then((response)=>response.json()
+                        ).then((data)=>{
+                           console.log(data)
+                            if (data==="session_expired"){
                             
-      document.getElementById('expired_session').classList.remove('hidden')
+      document.getElementById("expired_session").classList.remove('hidden')
+      document.getElementsByClassName("votebtn")[0].classList.add('hidden')
       
       window.onbeforeunload= ()=>{
         window.setTimeout(()=>{
@@ -154,7 +164,7 @@ catch{
     }
     else{
                             data=Object.entries(data)
-                            console.log(data)
+                            
                     if (data.length===0){
                                 const links=document.getElementsByTagName('a')
                                 for (i of links){
@@ -188,9 +198,12 @@ catch{
         body:JSON.stringify({'infoHeadline':infoHeadline})
 }).then(response=>response.json()).then(
                         data=>{
+                            console.log(data)
+                            document.getElementById('taskuncomplete').classList.add("hidden")
+            
                             if (data==='session expired'){
                                 document.getElementById('expired_session').classList.remove('hidden')
-      
+                                document.getElementsByClassName('votebtn')[0].classList.add('hidden')
       window.onbeforeunload= ()=>{
         window.setTimeout(()=>{
             window.location='/'
@@ -218,7 +231,7 @@ document.querySelector(`#td${id} :nth-child(2)`).innerHTML=data['count1']['downv
 else{
                       
                 const index=infoHeadline.indexOf(id) 
-                console.log(infoHeadline)           
+                       
                 if (value==='upvote'){
                             document.getElementById(`tu${id}`).classList.add('purple')
                             
@@ -264,10 +277,19 @@ else{
                const info= document.getElementById("info")
                if(info){
                    info.addEventListener('click',()=>{
-                       fetch(`/validatetask/${JSON.stringify(infoHeadline)}`).then(response=>response.json()).then(
+                       fetch(`/validatetask/`,
+                       {
+                        method:"POST",
+                        headers:{'Content-Type':'application/json'},
+                        body:JSON.stringify(infoHeadline)
+                       }
+                       ).then(response=>response.json()).then(
                         data=>{ 
+                            
                             if (data==='session expired'){
-      document.getElementById('expired_session').classList.remove('hidden')
+    document.getElementsByClassName('votebtn')[0].classList.add('hidden')
+    document.getElementById('expired_session').classList.remove('hidden')
+   
       window.location=''
     }
     else{

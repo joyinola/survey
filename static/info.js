@@ -72,10 +72,20 @@ window.onload= ()=>{
     }).then(response=>response.json()).then(data=>{
         document.getElementById('info').classList.add('hidden');
         document.getElementById('politics').classList.add('hidden')
+
         document.getElementById('confirmcode').innerHTML=`Your survey has been submitted 
         successfully below is your confirmation code ${data}`;
-        document.getElementById('selectItem').classList.add('hidden')
+
+        document.getElementById('selectItem').classList.add('hidden');
         document.getElementById('code').classList.remove('hidden');
+
+        window.onbeforeunload= ()=>{
+            window.setTimeout(()=>{
+                window.location='/'
+            },0)
+            window.onbeforeunload=null
+          }
+          
         
     }
     )}})}}
