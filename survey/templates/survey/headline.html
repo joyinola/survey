@@ -286,11 +286,16 @@ else{
                        ).then(response=>response.json()).then(
                         data=>{ 
                             
-                            if (data==='session expired'){
+                            if (data==='session_expired'){
     document.getElementsByClassName('votebtn')[0].classList.add('hidden')
     document.getElementById('expired_session').classList.remove('hidden')
-   
-      window.location=''
+    
+    window.onbeforeunload= ()=>{
+        window.setTimeout(()=>{
+            window.location='/'
+        },0)
+        window.onbeforeunload=null
+      }
     }
     else{
 

@@ -1,4 +1,5 @@
 window.onload= ()=>{
+
     document.getElementById('backToGen').addEventListener('click',()=>{
         document.getElementById('politics').classList.toggle('hidden')
         document.getElementById('info').classList.toggle('hidden')
@@ -23,15 +24,17 @@ window.onload= ()=>{
                 "qualifications":document.getElementById('qualification').value,
                 // "first":true
                 }
+                
                
                 if (userInfo1["gender"]===''||userInfo1["age"]===''||userInfo1["qualifications"]===''){
-                    document.getElementById('error').innerHTML='FILL OUT ALL FORMS BEFORE PROCEEDING!'
+                  
                     document.getElementById('selectItem').classList.remove('hidden')
+                    document.getElementById('error').classList.add('hidden')
                 }
               
-                else if (isNaN(userInfo1['age']) || !Number.isInteger(parseFloat(userInfo1['age']))){
-                    document.getElementById('error').innerHTML='Invalid Age'
-                    document.getElementById('selectItem').classList.remove('hidden')
+                else if (isNaN(userInfo1['age']) || !Number.isInteger(parseFloat(userInfo1['age']))){   
+                    document.getElementById('error').classList.remove('hidden')
+                    document.getElementById('selectItem').classList.add('hidden')
                 }
                 else{
     
@@ -42,9 +45,26 @@ window.onload= ()=>{
                             'Content-Type':'application/json',
                         },body:JSON.stringify({userInfo1})
                 }).then(response=>response.json()).then(data=>{
+                    console.log(data)
+                    console.log(userInfo1)
+                    if (data==='session expired'){
+                        document.getElementById('selectItem').classList.add('hidden')
+                        document.getElementById('error').classList.add('hidden')
+                        document.getElementById('expired_session').classList.remove('hidden')
+                        window.onbeforeunload= ()=>{
+                            window.setTimeout(()=>{
+                                window.location='/'
+                            },0)
+                            window.onbeforeunload=null
+                          }
+                      }
+                      else{
                 document.getElementById('politics').classList.toggle('hidden')
                 document.getElementById('info').classList.toggle('hidden')
-                document.getElementById('selectItem').classList.add('hidden')})}})
+                document.getElementById('selectItem').classList.add('hidden')
+                document.getElementById('error').classList.add('hidden')
+            }
+            })}})
     
     const submit=document.getElementById('submitInfo')
     if (submit){
@@ -57,8 +77,10 @@ window.onload= ()=>{
     "candidate":document.getElementById('candidate').value,
     "republican":document.getElementById('republican').value,
         }
+        
     
         if (userInfo["interest"]===''||userInfo["candidate"]===''||userInfo["republican"]===''){
+            
             document.getElementById('selectItem').classList.remove('hidden')
         }
         
@@ -70,22 +92,41 @@ window.onload= ()=>{
                 'Content-Type':'application/json',
             },body:JSON.stringify({userInfo})
     }).then(response=>response.json()).then(data=>{
+        console.log(data)
+        if (data==='session expired'){
+            document.getElementById('selectItem').classList.add('hidden')
+                        document.getElementById('error').classList.add('hidden')                     
+            document.getElementById('expired_session').classList.remove('hidden')
+          
+            window.onbeforeunload= ()=>{
+              window.setTimeout(()=>{
+                  window.location='/'
+              },0)
+              window.onbeforeunload=null
+            }
+          }
+          else{
         document.getElementById('info').classList.add('hidden');
         document.getElementById('politics').classList.add('hidden')
-
         document.getElementById('confirmcode').innerHTML=`Your survey has been submitted 
         successfully below is your confirmation code ${data}`;
-
-        document.getElementById('selectItem').classList.add('hidden');
+        document.getElementById('selectItem').classList.add('hidden')
+        document.getElementById('error').classList.add('hidden')
+    
         document.getElementById('code').classList.remove('hidden');
-
+    
+    
         window.onbeforeunload= ()=>{
             window.setTimeout(()=>{
                 window.location='/'
             },0)
             window.onbeforeunload=null
           }
-          
+        
+    
+    
+        
+    }
         
     }
     )}})}}
