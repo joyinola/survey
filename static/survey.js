@@ -12,7 +12,7 @@ const prolific_id=document.getElementById("prolific_id_btn")
 
     fetch(`/user/${id}`).then(
         response=> response.json()).then(data=> {
-          console.log(data)
+        
         
         if (data==='Gen not found'){
             document.getElementById('survey_inactive').classList.remove('hidden')
@@ -43,8 +43,7 @@ document.getElementById('prolific_id_page').addEventListener('click',()=>{
 })
 
 document.getElementById('backToTest').addEventListener('click',()=>{
-  // document.getElementById('Instructions').classList.add('hidden')
-  document.getElementById('headlines1').classList.add('hidden')
+ document.getElementById('headlines1').classList.add('hidden')
 
   document.getElementById('testSection').classList.remove('hidden')
 })
@@ -67,7 +66,7 @@ else{
     body:JSON.stringify({'testInput':testInput})
   }
     ).then(response=>response.json()).then(data=>{
-    // console.log(data)
+  
     if (data==='session expired'){
                                
       document.getElementById('expired_session').classList.remove('hidden')
