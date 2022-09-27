@@ -1,22 +1,26 @@
-const prolific_id=document.getElementsByClassName("prolific_id")
-for(const i of prolific_id){
-i.addEventListener('submit',function(e){
+document.getElementById('id').onclick=()=>{
+  document.getElementById('id_voted').classList.add('hidden')
+}
+const prolific_id=document.getElementById("prolific_id_btn")
+
+  prolific_id.addEventListener('click',function(e){
     e.preventDefault()
     
-   
+    
     document.getElementById('id_voted').classList.add('hidden')
     const id=document.getElementById('id').value;
 
     fetch(`/user/${id}`).then(
         response=> response.json()).then(data=> {
-          // console.log(data)
+          console.log(data)
         
         if (data==='Gen not found'){
             document.getElementById('survey_inactive').classList.remove('hidden')
           }
       else if(data==='Gen found'){
-      document.getElementById('intro').classList.toggle('hidden')
+      document.getElementById('intro_page').classList.toggle('hidden')
       document.getElementById('testSection').classList.toggle('hidden') 
+      document.getElementById('header_img').classList.add('hidden')
 
     }
     else if(data==='user voted'){
@@ -27,25 +31,19 @@ i.addEventListener('submit',function(e){
         
 
            
-    }).catch(err=>console.log(err))
-})}
+    })
+})
 
 
 document.getElementById('prolific_id_page').addEventListener('click',()=>{
-    document.getElementById('intro').classList.toggle('hidden')
+    document.getElementById('intro_page').classList.toggle('hidden')
     document.getElementById('survey_inactive').classList.add('hidden')
+    document.getElementById('header_img').classList.remove('hidden')
     document.getElementById('testSection').classList.toggle('hidden')
 })
-// const goToTest=document.getElementsByClassName("goToTest")
-// for(i of goToTest){
-//   i.addEventListener('click',()=>{
 
-//     document.getElementById('Instructions').classList.toggle('hidden')
-//     document.getElementById('testSection').classList.toggle('hidden')
-//   })
-// }
 document.getElementById('backToTest').addEventListener('click',()=>{
-  document.getElementById('Instructions').classList.add('hidden')
+  // document.getElementById('Instructions').classList.add('hidden')
   document.getElementById('headlines1').classList.add('hidden')
 
   document.getElementById('testSection').classList.remove('hidden')

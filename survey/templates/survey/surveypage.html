@@ -16,43 +16,77 @@
     <link rel='stylesheet' type='text/css' media='screen' href='../../static/survey.css'>
 </head>
 <body>
+  
     <div id="expired_session" class="hidden alert alert-danger"> Session expired. Please, refresh page</div>
-    <section id="intro" >
-        <header>
 
-            <h3 class="animate__animated animate__slideInLeft">Welcome to the experiment</h3>
     
-        </header>
-        <article>
+   
+       
+            <div>
+                <div id="header_img">
+                    <img id =rocket src="../../static/images/day20-rocket1.png" alt="">
+                </div>
+               
+                <div class="intro" id="intro_page">
+                    <div>
+                
+                    <header>
+           
+                    <h3 class="animate__animated animate__slideInLeft">Welcome to the experiment</h3>
             
-
-                <p>-       Participation requires that you give your informed consent (below) before proceeding.</p>    
-                <p>-       Your privacy will be maintained in all published and written data resulting from this study.</p>
-                <p>-       At any point, you may refuse to participate further without penalty.</p>
-
-                <strong>Complete this study on your own: do not ask others about the questions or research the answers on the internet.</strong>
-                <br>
-               <p> -       To ensure you get paid for participating, please enter your prolific ID below:</p>
-        </article>
-        <form id='form' class="prolific_id">
-            <div class="input-group flex-nowrap">
-        <span class="input-group-text" id="addon-wrapping">Prolific ID</span>
-        <input type="text" id="id" required class="form-control" placeholder="Input answer" aria-label="Username" aria-describedby="addon-wrapping">
-        </div>
+                    </header>
+                    <div>
+                    
         
-        <br>
-        <p>-       By ticking the box below and proceeding to the study task, you certify that you have read this form,and agreed to participate in accordance with the above conditions.</p>
-        <p>-       If you have any questions or comments you can contact the experimenter at:gafari.lukumon@um6p.ma Thanks.
-        </p>
-        <p id='survey_inactive' class='hidden alert alert-warning' > Survey Not Active, Please Try Again Later</p>
-        <p id='id_voted' class='hidden alert alert-warning' > Prolific Id already in use</p>
+                        <p>-       Participation requires that you give your informed consent (below) before proceeding.</p>    
+                        <p>-       Your privacy will be maintained in all published and written data resulting from this study.</p>
+                        <p>-       At any point, you may refuse to participate further without penalty.</p>
         
-        <input type="submit" class='btn btn-primary' value="Next"/>
-    </form>
-    </section>
+                      <p>  <strong>Complete this study on your own: do not ask others about the questions or research the answers on the internet.</strong>
+                    </p>
+                       <p> -       To ensure you get paid for participating, please enter your prolific ID below:</p>
+                    </div>
+
+                    <br>
+                    <div  id="prolific_id">
+                        <div class="input-data">
+                
+                            <input type="text" required name="prolific_id" class="block" id="id">
+                            <label for="Prolific ID"> Prolific ID:</label>
+                            <div class="underline"></div>
+                        </div>
+                
+                     
+                        <p>-       By ticking the box below and proceeding to the study task, you 
+                            certify that you have read this form, and agreed to participate in accordance with the above conditions.
+
+                        </p>
+                        <p >-       If you have any questions or comments you can contact
+                             the experimenter at: gafari.lukumon@um6p.ma Thanks.
+                        </p>
+                        <p id='survey_inactive' class='hidden alert alert-warning' > Survey Not Active, Please Try Again Later</p>
+                        <p id='id_voted' class='hidden alert alert-warning' > Prolific Id already in use</p>
+                        <div id="next_btn">
+                            <input type="submit" id="prolific_id_btn" class='btnn' value="Next >"/>
+                        </div>
+                        
+                    </div>
+                
+                
+                
+
+                </div></div>
+                
+</div>
+          
+
+        
+
+       
     
   
-    <section id='testSection'class="hidden">
+<div class="intro hidden" id='testSection'><div><section >
+    <header> <h3 class="animate__animated animate__slideInLeft">Color Test</h3> </header>
         <p>The colour test is simple, when asked for your favourite colour you must enter the word<strong> puce </strong>  in the text box below.
             Based on the text you read above, what colour have you been asked to enter?
             </p>
@@ -61,32 +95,36 @@
         <input type="text" id="testInput" required class="form-control" placeholder="" aria-label="Username" aria-describedby="addon-wrapping">
         <br>
         <div id='inputerror' class='hidden'>
-            <p class="alert alert-danger">AN INPUT MUST BE PROVIDED!</p>
+            <p class="alert">AN INPUT MUST BE PROVIDED!</p>
         </div>
         <br>
-
-        <button type="button" id="prolific_id_page" class=" btn btn-primary"> Back</button>
-        <button type="submit" class="test btn btn-primary">Continue</button>
+<div class="btn_div">
+        <button type="button" id="prolific_id_page" class=" btnn"> < Back </button>
+        <button type="submit" class="test btnn"> Continue ></button>
+    </div>
         </form>
        
-    </section>
+    </section></div></div>
     
-    <section id="headlines1" class="hidden">
-        <h2>Thanks for joining our survey</h2>
+    <div class="intro hidden"  id="headlines1"><div><section >
+        <header> <h3 class="animate__animated animate__slideInLeft">Thanks for joining our survey</h3> </header>
+        
         <br>
         <p> You will now be asked to answer a few questions about the news headlines we found online.  </p>
-        <p>The reliability of the news sources is uncertain. The sources will not b made visible to you </p>
+        <p>The reliability of the news sources is uncertain. The sources will not be made visible to you </p>
         <p>For this task, you will be shown two headlines. You will be asked to upvote or downvote a headline</p>
         <p>Each headliine has an upvote or downvote option and a counter next to it. The counter tells you what other respondents selected when voting for the headline. Please note that you can only vote 
             on a single headline out of the two possible headlines
         </p>
-   
-        <button type="submit" id='backToTest' class=" btn btn-primary"> Back</button>
-        <button type="submit" id="headlines2" class="healines btn btn-primary"> Continue</button>
-    </section>
+   <div class="btn_div">
+        <button type="submit" id='backToTest' class=" btnn"> < Back</button>
+        <button type="submit" id="headlines2" class="healines btnn"> Continue ></button>
+        </div>
+    </section></div></div>
 
    
     <script src='{%static "survey.js"%}' type="text/javascript"></script>
-    <script type="text/javascript">document.getElementById('form').onSubmit=(e)=>e.preventDefault()</script>  
+    <!-- <script type="text/javascript">document.getElementById('form').onSubmit=(e)=>e.preventDefault()</script>   -->
+
 </body>
 </html>

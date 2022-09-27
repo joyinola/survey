@@ -101,14 +101,17 @@ def taskverify(request):
 @csrf_exempt
 
 def info(request):
-    
+   
     if request.method=="POST":
+       
         if not is_cookie_valid(request):
             if 'data' in request.session:
                 del request.session['data']
             return JsonResponse('session expired',safe=False)
+        
         user=Utilizer.objects.get(prolificId=request.COOKIES['userid'])  
         data=json.loads(request.body)
+       
         if 'userInfo1' in data:
             
             user.age=data['userInfo1']['age']
@@ -117,19 +120,26 @@ def info(request):
             user.save()
 
             return JsonResponse('sucess',safe=False)
-        else:
+        elif 'userInfo' in data:
+           
 
             user.politicalInterest=data['userInfo']['interest']
             user.presidentialCandidate=data['userInfo']['candidate']
             user.party=data['userInfo']['republican']
             myuuid=uuid.uuid4()
-            if not user.confirmationCode:
-                user.confirmationCode=myuuid
-            user.save()
-            del request.COOKIES['userid']
-            del request.session['data']
+            
+            try:
+                
+                del request.session['data']
+                if not user.confirmationCode:
+                    user.confirmationCode=myuuid
+                    user.save()
 
+                del request.COOKIES['userid']
+            except:
+                return JsonResponse('no data',safe=False)
 
+            
             return JsonResponse(user.confirmationCode, safe=False)
 
     return render(request, 'survey/info.html')

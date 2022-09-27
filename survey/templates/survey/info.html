@@ -17,11 +17,12 @@
 
 </head>
 <body>
-    <div id="expired_session" class="hidden alert alert-danger"> Session expired. Please, refresh page</div>
-    <section id="info">
+    <div id="expired_session" class="hidden alert"> Session expired. Please, refresh page</div>
+    <div class="info"  id="info"> 
+    
         <section id="gender">
             <br>
-            <h4>What is your Gender?</h4>
+            <h5>What is your Gender?</h5>
             <input type="radio" name="Gender" id='male' value="Male">
             <label for="male" >Male</label>
             <input type="radio" name="Gender" id='female' value="Female">
@@ -31,17 +32,18 @@
         </section>
         <br>
         
-        <label for="age">What is your age?</label>
-        <br>
-        <label for="testInput"> Input answer</label>
-        <input type="text" id="age" required class="form-control" placeholder="" aria-label="Username" aria-describedby="addon-wrapping">
-        
+       <section> <div class="input-data">
+        <input type="text" id="age" required  placeholder="" aria-label="Username" aria-describedby="addon-wrapping">
+        <label for="age"><h5>What is your age?</h5></label>
+        <div class="underline"></div>
+    </div>
+</section>
  
 
         <br>
         
-        <label for="qualification">What is the highest level of education you have completed?</label>
-        <br>
+       <section>
+        <h5>What is the highest level of education you have completed? </h5>
         <select id="qualification">
             <option disabled selected value> -- select an option -- </option>
             <option value="Less than High School">Less than High School</option>
@@ -52,26 +54,28 @@
             <option value="Doctorate Degree">Doctorate Degree</option>
             
         </select>
-        <br>
-        <br>
-      <div class='hidden alert alert-danger' id='selectItem'>
+    </section>
+        
+        
+      <div class='hidden alert' id='selectItem'>
             Fill out all forms before proceeding
         </div>
 
-            <div class='hidden alert alert-danger' id='error'>
+            <div class='hidden alert' id='error'>
                 Invalid age
             </div>
-
-        <button id ='genInfo' class="btn ">Continue</button>
-
+            <div class="btn_div">
+ <button id='genInfo' class="btnn">Continue</button>
+</div>
         
-    </section>
+     </div>
 
   
-        <section id="politics" class='hidden'>
-            <br>
-         <label for="qualification">How interested in politics are you?</label>
+       <div class="info hidden" id="politics"> <section>
         <br>
+         <label for="qualification"><h5>How interested in politics are you?</h5></label>
+        <br>
+
         <select id="interest">
             <option disabled selected value> -- select an option -- </option>
             <option value="Not at all Interested">Not at all Interested</option>
@@ -82,7 +86,7 @@
         </select>
         <br>
         <br>
-         <label for="republican">Generally speaking, do you usually think of yourself as..</label>
+         <label><h5>Generally speaking, do you usually think of yourself as..</h5></label>
         <br>
         <select id="republican">
             <option disabled selected value> -- select an option -- </option>
@@ -97,7 +101,7 @@
         </select>
         <br>
         <br>
-         <label for="candidate">For what candidate did you vote at the last US presidential election?</label>
+         <label><h5>For what candidate did you vote at the last US presidential election?</h5></label>
         <br>
         <select id="candidate">
             <option disabled selected value> -- select an option -- </option>
@@ -108,16 +112,30 @@
         </select>
         <br>
         <br>
-        <button id='backToGen' class="btn">Back</button>
-        <button id="submitInfo" style="width: 175px; height: 35px;" class='btn'>Submit experiment</button>
-    </section>
+        <div class='hidden alert selectItem2'  >
+            Fill out all forms before proceeding
+        </div>
+        <div class="btn_div">
+        <button id='backToGen' class="btnn">Back</button>
+        <button id="submitInfo"  class='btnn'>Submit experiment</button>
+    </div>
+    </section></div>
     
        
     
-    <section id="code" class="hidden">
+    <section id="code" class="info hidden">
         <div id="confirmcode">
         </div>
     </section>
+
     <script src="../static/info.js"></script>
+    <script>
+      const btn_div=  document.getElementsByClassName('btn_div')
+      for (i of btn_div){
+        if (i.children.length===1){
+            i.style.justifyContent='end'
+        }
+      }
+    </script>
 </body>
 </html>
