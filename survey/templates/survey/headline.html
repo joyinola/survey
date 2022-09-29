@@ -24,6 +24,7 @@
     <div class="container intro">
         <div id ='headlineRow' class="row">
             {%for i in p.object_list%}
+            
             <div  class="col col-6 d-flex justify-content-center">
             <br>
             <div class="col-content">
@@ -216,7 +217,7 @@ catch{
         body:JSON.stringify({'infoHeadline':infoHeadline})
 }).then(response=>response.json()).then(
                         data=>{
-                            
+                           
                             document.getElementById('taskuncomplete').classList.add("hidden")
             
                             if (data==='session expired'){

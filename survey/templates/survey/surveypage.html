@@ -57,15 +57,18 @@
                         </div>
                 
                      
-                        <p>-       By ticking the box below and proceeding to the study task, you 
+                        <p>-       By ticking the botton below and proceeding to the study task, you 
                             certify that you have read this form, and agreed to participate in accordance with the above conditions.
 
                         </p>
                         <p >-       If you have any questions or comments you can contact
                              the experimenter at: gafari.lukumon@um6p.ma Thanks.
                         </p>
-                        <p id='survey_inactive' class='hidden alert alert-warning' > Survey Not Active, Please Try Again Later</p>
-                        <p id='id_voted' class='hidden alert alert-warning' > Prolific Id already in use</p>
+                        <div id="errors">
+                        <p id='survey_inactive' class='hidden alert ' > Survey Not Active, Please Try Again Later</p>
+                        <p id='id_voted' class='hidden alert ' > Prolific Id already in use</p>
+                        <p id='id_empty' class='hidden alert ' > Please provide Prolific Id</p>
+                    </div>
                         <div id="next_btn">
                             <input type="submit" id="prolific_id_btn" class='btnn' value="Next >"/>
                         </div>

@@ -7,7 +7,7 @@ header{
 display: flex;
 justify-content: end;
 }
-@media only screen and (max-width:1000px) {
+@media only screen and (max-width:800px) {
  body{
         font-family: 'Roboto Slab', serif;
         font-size: 15px;
@@ -160,12 +160,20 @@ box-shadow: 10px 10px 20px 3px;
     margin-top: 50px;
     margin-bottom: 30px;
 }
-  
+.col-6{
+    width:100%
+}
+.col-content{
+width: 80%;
+display: flex;
 
+margin-top: 30px;
+justify-content: space-between;
+}
 
 #headlineRow img{
-    width: 99%;
-    height: 170px;
+    width: 75%;
+    height: 200px;
 
 } 
 .upvote,.downvote{
@@ -204,12 +212,6 @@ img{
 
 }
 
-
-
-
-
-
-
 #headlineRow p{
     width: 140px;
     height: 120px;
@@ -218,6 +220,7 @@ img{
 .vote_btn_div{
     display: flex;
     justify-content: space-around;
+    flex-direction: column;
 }
 [data-thumbs]{
     background-color: white;
@@ -235,7 +238,16 @@ img{
     width: fit-content;
 
 }
-
+ 
+.purple{
+    background-color:#260339;
+    color: white;
+    /* border-radius: 8px; */
+}
+.purple .fa{
+    background-color:#260339;
+    color: rgba(255, 238, 249,0.5);
+}
 
 }
 
@@ -397,6 +409,7 @@ img{
 #headlineRow img{
   
     height: 350px;
+    width:99.9%
 
 }
 #headlineRow p{

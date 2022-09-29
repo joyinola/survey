@@ -8,6 +8,15 @@ window.onload= ()=>{
     document.getElementsByClassName('selectItem2')[0].classList.add('hidden')
         }) }
 
+    const select= document.getElementsByTagName('select')
+
+    for (i of select){
+    i.addEventListener('click',()=>{
+        document.getElementById('selectItem').classList.add('hidden')
+        document.getElementById('error').classList.add('hidden')
+        document.getElementsByClassName('selectItem2')[0].classList.add('hidden')
+            }) }
+
     document.getElementById('backToGen').addEventListener('click',()=>{
         document.getElementById('politics').classList.toggle('hidden')
         document.getElementById('info').classList.toggle('hidden')

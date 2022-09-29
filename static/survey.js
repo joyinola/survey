@@ -1,6 +1,9 @@
 document.getElementById('id').onclick=()=>{
   document.getElementById('id_voted').classList.add('hidden')
+  document.getElementById('id_empty').classList.add('hidden')
+ 
 }
+
 const prolific_id=document.getElementById("prolific_id_btn")
 
   prolific_id.addEventListener('click',function(e){
@@ -8,14 +11,19 @@ const prolific_id=document.getElementById("prolific_id_btn")
     
     
     document.getElementById('id_voted').classList.add('hidden')
+    document.getElementById('id_empty').classList.add('hidden');
     const id=document.getElementById('id').value;
-
-    fetch(`/user/${id}`).then(
-        response=> response.json()).then(data=> {
+    if (id===''){
+      document.getElementById('id_empty').classList.remove('hidden')
+    }
+    else{
+      fetch(`/user/${id}`).then(
+        response=> response.json()).then( data=> {
         
         
         if (data==='Gen not found'){
             document.getElementById('survey_inactive').classList.remove('hidden')
+            document.getElementById('next_btn').classList.add('hidden')
           }
       else if(data==='Gen found'){
       document.getElementById('intro_page').classList.toggle('hidden')
@@ -32,6 +40,30 @@ const prolific_id=document.getElementById("prolific_id_btn")
 
            
     })
+    }
+
+    // fetch(`/user/${id}`).then(
+    //     response=> response.json()).then( data=> {
+        
+        
+    //     if (data==='Gen not found'){
+    //         document.getElementById('survey_inactive').classList.remove('hidden')
+    //       }
+    //   else if(data==='Gen found'){
+    //   document.getElementById('intro_page').classList.toggle('hidden')
+    //   document.getElementById('testSection').classList.toggle('hidden') 
+    //   document.getElementById('header_img').classList.add('hidden')
+
+    // }
+    // else if(data==='user voted'){
+  
+    //   document.getElementById('id_voted').classList.remove('hidden')
+    // }
+    
+        
+
+           
+    // })
 })
 
 
@@ -95,9 +127,7 @@ for (const i of test){
 
   
 }
-// document.getElementById('puceform').addEventListener('submit',(e)=>{
-//   e.preventDefault()
-//   puce(e)})
+
 document.getElementById('headlines2').addEventListener('click',()=>{
    
 
