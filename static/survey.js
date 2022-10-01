@@ -1,3 +1,15 @@
+let checkbox = document.getElementById('agree')
+checkbox.onclick=()=>{
+  if (checkbox.checked ==true){
+    document.getElementById('prolific_id_btn').classList.remove('hidden')
+  }
+  else{
+    document.getElementById('prolific_id_btn').classList.add('hidden')
+  }
+}
+
+  
+
 document.getElementById('id').onclick=()=>{
   document.getElementById('id_voted').classList.add('hidden')
   document.getElementById('id_empty').classList.add('hidden')
