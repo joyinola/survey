@@ -67,7 +67,7 @@ def updateUser(request,id):
         response.set_cookie('userid',id,max_age=600)
     return response
 
-# @id_required
+@id_required
 @csrf_exempt
 def taskverify(request):
     if not is_cookie_valid(request):
@@ -99,7 +99,7 @@ def taskverify(request):
     return JsonResponse(status, safe=False)
   
 @csrf_exempt
-
+@id_required
 def info(request):
    
     if request.method=="POST":
@@ -146,7 +146,7 @@ def info(request):
 
 
 @csrf_exempt
-
+@id_required
 def vote(request,num:str,vote:str):
     print(is_cookie_valid(request))
     if not is_cookie_valid(request):
@@ -225,7 +225,7 @@ def vote(request,num:str,vote:str):
        
     return JsonResponse(counts)
     
-# @id_required
+@id_required
 @csrf_exempt
 def voteCasted(request):
    
@@ -271,7 +271,7 @@ def voteCasted(request):
         return JsonResponse(status)
 
 @csrf_exempt
-
+@id_required
 def saveTest(request):
     
     if not is_cookie_valid(request):
@@ -287,7 +287,7 @@ def saveTest(request):
         return JsonResponse('false',safe=False)
 
 
-# @id_required
+@id_required
 def updateHeadline(request,num):
     if not is_cookie_valid(request):
         
